@@ -62,9 +62,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
-              ◎
-            </span>
+            <img src="/logo.png" alt="Lumora Logo" className="h-10 w-auto transition-transform duration-300 group-hover:scale-110" />
             <span
               className="text-xl font-bold tracking-tight"
               style={{ fontFamily: "var(--font-sans), Outfit, sans-serif" }}

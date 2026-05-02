@@ -70,8 +70,8 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <span className="text-3xl">◎</span>
+          <Link href="/" className="inline-flex flex-col items-center gap-2">
+            <img src="/logo.png" alt="Lumora Logo" className="h-24 w-auto mb-2" />
             <span className="text-2xl font-bold" style={{ fontFamily: "var(--font-outfit)" }}>
               Lum<span className="gradient-text">ora</span>
             </span>

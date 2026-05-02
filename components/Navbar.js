@@ -69,7 +69,7 @@ export default function Navbar() {
               className="text-xl font-bold tracking-tight"
               style={{ fontFamily: "var(--font-sans), Outfit, sans-serif" }}
             >
-              Persona<span className="gradient-text">Link</span>
+              Lum<span className="gradient-text">ora</span>
             </span>
           </Link>
 

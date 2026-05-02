@@ -23,9 +23,9 @@ function JoinContent() {
         </h1>
         <p className="text-sm mb-2" style={{ color: "var(--text-secondary)" }}>
           {from ? (
-            <><strong style={{ color: "var(--foreground)" }}>{decodeURIComponent(from)}</strong> wants to compare personality profiles with you on PersonaLink.</>
+            <><strong style={{ color: "var(--foreground)" }}>{decodeURIComponent(from)}</strong> wants to compare personality profiles with you on Lumora.</>
           ) : (
-            "Someone wants to compare personality profiles with you on PersonaLink."
+            "Someone wants to compare personality profiles with you on Lumora."
           )}
         </p>
         <p className="text-xs mb-8" style={{ color: "var(--text-tertiary)" }}>

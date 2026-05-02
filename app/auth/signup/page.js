@@ -130,7 +130,7 @@ export default function SignupPage() {
           <Link href="/" className="inline-flex items-center gap-2">
             <span className="text-3xl">◎</span>
             <span className="text-2xl font-bold" style={{ fontFamily: "var(--font-outfit)" }}>
-              Persona<span className="gradient-text">Link</span>
+              Lum<span className="gradient-text">ora</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1" style={{ fontFamily: "var(--font-outfit)" }}>

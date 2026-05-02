@@ -65,7 +65,7 @@ export default function LoginPage() {
           <Link href="/" className="inline-flex items-center gap-2">
             <span className="text-3xl">◎</span>
             <span className="text-2xl font-bold" style={{ fontFamily: "var(--font-outfit)" }}>
-              Persona<span className="gradient-text">Link</span>
+              Lum<span className="gradient-text">ora</span>
             </span>
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1" style={{ fontFamily: "var(--font-outfit)" }}>
@@ -210,7 +210,7 @@ export default function LoginPage() {
 
         {/* Security note */}
         <p className="text-center text-xs mt-6" style={{ color: "var(--text-tertiary)" }}>
-          🔒 Your data is encrypted and never shared. PersonaLink is not a diagnostic tool.
+          🔒 Your data is encrypted and never shared. Lumora is not a diagnostic tool.
         </p>
       </div>
     </div>

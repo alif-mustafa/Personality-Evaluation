@@ -9,29 +9,29 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Primary palette */
-  --color-primary-50: #eef5ff;
-  --color-primary-100: #d9e8ff;
-  --color-primary-200: #bcd8ff;
-  --color-primary-300: #8ec1ff;
-  --color-primary-400: #59a0ff;
-  --color-primary-500: #3b7bfc;
-  --color-primary-600: #1f56f1;
-  --color-primary-700: #1a43de;
-  --color-primary-800: #1c37b4;
-  --color-primary-900: #1d338d;
+  /* Primary palette (Indigo) */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5;
+  --color-primary-700: #4338ca;
+  --color-primary-800: #3730a3;
+  --color-primary-900: #312e81;
 
-  /* Sage / green accent */
-  --color-sage-50: #f0f7f4;
-  --color-sage-100: #dbede3;
-  --color-sage-200: #b9dccb;
-  --color-sage-300: #8ac4a9;
-  --color-sage-400: #5aa784;
-  --color-sage-500: #3a8c69;
-  --color-sage-600: #2a7054;
-  --color-sage-700: #235a45;
-  --color-sage-800: #1f4838;
-  --color-sage-900: #1b3c2f;
+  /* Sage / green accent (Changed to Coral/Rose to match Logo) */
+  --color-sage-50: #fff1f2;
+  --color-sage-100: #ffe4e6;
+  --color-sage-200: #fecdd3;
+  --color-sage-300: #fda4af;
+  --color-sage-400: #fb7185;
+  --color-sage-500: #f43f5e;
+  --color-sage-600: #e11d48;
+  --color-sage-700: #be123c;
+  --color-sage-800: #9f1239;
+  --color-sage-900: #881337;
 
   /* Warm accent */
   --color-warm-50: #fef7ee;
@@ -69,7 +69,7 @@
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
   --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 10px -4px rgba(0,0,0,0.04);
   --shadow-xl: 0 20px 40px -5px rgba(0,0,0,0.08), 0 8px 16px -8px rgba(0,0,0,0.04);
-  --shadow-glow: 0 0 30px rgba(59, 123, 252, 0.15);
+  --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -86,7 +86,7 @@
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
     --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.35);
     --shadow-xl: 0 20px 40px -5px rgba(0,0,0,0.4);
-    --shadow-glow: 0 0 30px rgba(59, 123, 252, 0.2);
+    --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.2);
   }
 }
 
@@ -105,7 +105,7 @@ body {
 }
 
 ::selection {
-  background: rgba(59, 123, 252, 0.2);
+  background: rgba(99, 102, 241, 0.2);
   color: inherit;
 }
 
@@ -192,7 +192,7 @@ body {
 
 /* ===== GRADIENT TEXT ===== */
 .gradient-text {
-  background: linear-gradient(135deg, #3b7bfc 0%, #3a8c69 50%, #59a0ff 100%);
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-sage-500) 50%, var(--color-primary-400) 100%);
   background-size: 200% 200%;
   animation: gradient-shift 4s ease infinite;
   -webkit-background-clip: text;
@@ -211,14 +211,14 @@ body {
 }
 
 .likert-option.selected {
-  border-color: #3b7bfc;
-  background: rgba(59, 123, 252, 0.08);
-  box-shadow: 0 0 0 3px rgba(59, 123, 252, 0.15);
+  border-color: var(--color-primary-500);
+  background: rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
   .likert-option.selected {
-    background: rgba(59, 123, 252, 0.15);
+    background: rgba(99, 102, 241, 0.15);
   }
 }
 
@@ -233,7 +233,7 @@ body {
   height: 100%;
   border-radius: 9999px;
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  background: linear-gradient(90deg, #3b7bfc, #3a8c69);
+  background: linear-gradient(90deg, var(--color-primary-500), var(--color-sage-500));
 }
 
 /* ===== HEATMAP CELL ===== */

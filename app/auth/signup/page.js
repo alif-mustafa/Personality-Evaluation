@@ -61,7 +61,9 @@ export default function SignupPage() {
         router.push("/profile/setup");
       }
     } else {
-      setLocalError(result.error || "Registration failed. Please try again.");
+      const errorMsg = result.error || "Registration failed. Please try again.";
+      setLocalError(errorMsg);
+      alert("Sign-up Error: " + errorMsg);
     }
   };
 

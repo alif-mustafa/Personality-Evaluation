@@ -42,7 +42,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center pt-24 pb-16">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center pt-24 pb-4">
 
 
           <h1
@@ -58,13 +58,11 @@ export default function Home() {
             className="text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-fade-up"
             style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
           >
-            Take personality assessments grounded in research. Discover your Big
-            Five traits, attachment style, and more — then unlock powerful couple
-            insights.
+            Every couple argues. But most arguments aren't really about the dishes, the silence, or the plans that changed. They're about two different people seeing the world differently. Lumora gently shows you why - and helps you find the light in each other.
           </p>
 
           <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-up"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 animate-fade-up"
             style={{ animationDelay: "300ms" }}
           >
             <Link
@@ -95,7 +93,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 px-4" style={{ background: "var(--surface)" }}>
+      <section className="pt-12 pb-24 px-4" style={{ background: "var(--surface)" }}>
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-3xl sm:text-4xl font-bold text-center mb-4"

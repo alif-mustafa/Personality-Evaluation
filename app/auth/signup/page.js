@@ -179,9 +179,7 @@ export default function SignupPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2">
             <img src="/Logo.png" alt="Lumora Logo" className="h-24 w-auto mb-2" />
-            <span className="text-2xl font-bold" style={{ fontFamily: "var(--font-outfit)" }}>
-              Lum<span className="gradient-text">ora</span>
-            </span>
+
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1" style={{ fontFamily: "var(--font-outfit)" }}>
             Create Your Account

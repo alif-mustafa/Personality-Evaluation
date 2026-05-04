@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20">
         {/* Background shapes */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -93,7 +93,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="pt-12 pb-24 px-4" style={{ background: "var(--surface)" }}>
+      <section className="py-12 px-4" style={{ background: "var(--surface)" }}>
         <div className="max-w-6xl mx-auto">
           <h2
             className="text-3xl sm:text-4xl font-bold text-center mb-4"

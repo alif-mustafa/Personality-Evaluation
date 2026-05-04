@@ -69,7 +69,7 @@ export default function SignupPage() {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    if (!otp || otp.length < 6) return setLocalError("Please enter the 6-digit code.");
+    if (!otp || otp.length < 6) return setLocalError("Please enter the verification code.");
     
     setIsVerifying(true);
     const result = await verifyOtp(form.email.trim(), otp);
@@ -123,7 +123,7 @@ export default function SignupPage() {
             
             <input
               type="text"
-              maxLength="6"
+              maxLength="8"
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ""))}
               placeholder="000000"

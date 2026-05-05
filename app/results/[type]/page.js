@@ -47,10 +47,10 @@ export default function ResultsPage({ params }) {
   }
 
   const { meta } = assessment;
-  const isAttachment = type === "attachment";
+  const isTypology = type === "attachment" || type === "gottman" || type === "lovelanguages";
 
   // Prepare radar chart data
-  const radarData = isAttachment
+  const radarData = isTypology
     ? Object.entries(result.scores).map(([trait, data]) => ({
         trait,
         value: data.normalized,
@@ -104,8 +104,8 @@ export default function ResultsPage({ params }) {
               <RadarChart data={radarData} />
             </div>
 
-            {/* Attachment style badge */}
-            {isAttachment && result.style && (
+            {/* Typology style badge */}
+            {isTypology && result.style && (
               <div
                 className="mt-4 p-4 rounded-xl text-center"
                 style={{
@@ -114,14 +114,14 @@ export default function ResultsPage({ params }) {
                 }}
               >
                 <span className="text-3xl block mb-2">
-                  {result.feedback.emoji}
+                  {result.feedback.emoji || "✨"}
                 </span>
-                <p className="text-sm font-semibold">{result.feedback.title}</p>
+                <p className="text-sm font-semibold">{result.feedback.title || result.feedback.primary || result.style}</p>
                 <p
                   className="text-xs mt-1"
                   style={{ color: "var(--text-tertiary)" }}
                 >
-                  Your primary attachment style
+                  Your primary result
                 </p>
               </div>
             )}
@@ -129,8 +129,8 @@ export default function ResultsPage({ params }) {
 
           {/* Trait Breakdowns */}
           <div className="lg:col-span-3 space-y-4">
-            {isAttachment ? (
-              /* Attachment results */
+            {isTypology ? (
+              /* Typology results (Attachment, Gottman, Love Languages) */
               <div className="space-y-4">
                 {/* Style description */}
                 <div
@@ -142,9 +142,9 @@ export default function ResultsPage({ params }) {
                     animationDelay: "150ms",
                   }}
                 >
-                  <h3 className="text-lg font-bold mb-3">{result.feedback.title}</h3>
+                  <h3 className="text-lg font-bold mb-3">{result.feedback.title || result.feedback.primary || result.style}</h3>
                   <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--text-secondary)" }}>
-                    {result.feedback.body}
+                    {result.feedback.description || result.feedback.body}
                   </p>
 
                   {result.feedback.strengths && (
@@ -167,20 +167,22 @@ export default function ResultsPage({ params }) {
                     </div>
                   )}
 
-                  <div
-                    className="p-4 rounded-xl"
-                    style={{
-                      background: "var(--color-sage-500)/8",
-                      borderLeft: "3px solid var(--color-sage-400)",
-                    }}
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "var(--color-sage-500)" }}>
-                      💡 Growth Tip
-                    </p>
-                    <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                      {result.feedback.tip}
-                    </p>
-                  </div>
+                  {result.feedback.tip && (
+                    <div
+                      className="p-4 rounded-xl"
+                      style={{
+                        background: "var(--color-sage-500)/8",
+                        borderLeft: "3px solid var(--color-sage-400)",
+                      }}
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "var(--color-sage-500)" }}>
+                        💡 Growth Tip
+                      </p>
+                      <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                        {result.feedback.tip}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Dimension scores */}
@@ -196,7 +198,13 @@ export default function ResultsPage({ params }) {
                     }}
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-sm font-semibold">{dim}</h4>
+                      <h4 className="text-sm font-semibold">
+                        {type === "lovelanguages" && dim === "A" ? "Words of Affirmation" :
+                         type === "lovelanguages" && dim === "T" ? "Quality Time" :
+                         type === "lovelanguages" && dim === "G" ? "Receiving Gifts" :
+                         type === "lovelanguages" && dim === "S" ? "Acts of Service" :
+                         type === "lovelanguages" && dim === "P" ? "Physical Touch" : dim}
+                      </h4>
                       <span className="text-lg font-bold gradient-text">{data.normalized}</span>
                     </div>
                     <div className="progress-track h-2">

@@ -21,8 +21,9 @@ export default function DashboardPage() {
   const hasAnyResults = Object.keys(results).length > 0;
   const assessments = [
     { type: "bigfive", label: "Big Five", icon: "🌊" },
+    { type: "lovelanguages", label: "Love Languages", icon: "❤️" },
     { type: "attachment", label: "Attachment Style", icon: "🔗" },
-    { type: "hexaco", label: "HEXACO-Lite", icon: "💎" },
+    { type: "gottman", label: "Conflict Styles", icon: "⚡" },
   ];
 
   // Prepare radar data from Big Five if available

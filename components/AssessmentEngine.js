@@ -113,52 +113,97 @@ export default function AssessmentEngine({ type, meta, questions, prompt, likert
           <span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)] mb-3 block">
             Question {currentIndex + 1}
           </span>
-          <h2 className="text-xl font-semibold mb-8 leading-relaxed">
-            "{currentQuestion.text}"
-          </h2>
+          {currentQuestion.text && (
+            <h2 className="text-xl font-semibold mb-8 leading-relaxed">
+              "{currentQuestion.text}"
+            </h2>
+          )}
 
-          {/* Likert Scale */}
+          {/* Answer Options */}
           <div className="flex flex-col gap-2">
-            {likert.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => handleSelect(option.value)}
-                className={`likert-option w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
-                  currentAnswer === option.value ? "selected" : ""
-                }`}
-                style={{
-                  background:
-                    currentAnswer === option.value
-                      ? "rgba(59, 123, 252, 0.08)"
-                      : "var(--surface-elevated)",
-                  border: `1.5px solid ${
-                    currentAnswer === option.value
-                      ? "var(--color-primary-500)"
-                      : "var(--border)"
-                  }`,
-                }}
-              >
-                <span className="flex items-center gap-3">
-                  <span
-                    className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
-                    style={{
-                      borderColor:
-                        currentAnswer === option.value
-                          ? "var(--color-primary-500)"
-                          : "var(--border)",
-                    }}
-                  >
-                    {currentAnswer === option.value && (
-                      <span
-                        className="w-2.5 h-2.5 rounded-full animate-scale-in"
-                        style={{ background: "var(--color-primary-500)" }}
-                      />
-                    )}
+            {currentQuestion.format === "ab" ? (
+              currentQuestion.options.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleSelect(option.value)}
+                  className={`likert-option w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+                    currentAnswer === option.value ? "selected" : ""
+                  }`}
+                  style={{
+                    background:
+                      currentAnswer === option.value
+                        ? "rgba(59, 123, 252, 0.08)"
+                        : "var(--surface-elevated)",
+                    border: `1.5px solid ${
+                      currentAnswer === option.value
+                        ? "var(--color-primary-500)"
+                        : "var(--border)"
+                    }`,
+                  }}
+                >
+                  <span className="flex items-center gap-3">
+                    <span
+                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all min-w-[20px]"
+                      style={{
+                        borderColor:
+                          currentAnswer === option.value
+                            ? "var(--color-primary-500)"
+                            : "var(--border)",
+                      }}
+                    >
+                      {currentAnswer === option.value && (
+                        <span
+                          className="w-2.5 h-2.5 rounded-full animate-scale-in"
+                          style={{ background: "var(--color-primary-500)" }}
+                        />
+                      )}
+                    </span>
+                    <span className="flex-1">{option.label}</span>
                   </span>
-                  {option.label}
-                </span>
-              </button>
-            ))}
+                </button>
+              ))
+            ) : (
+              likert?.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleSelect(option.value)}
+                  className={`likert-option w-full text-left px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+                    currentAnswer === option.value ? "selected" : ""
+                  }`}
+                  style={{
+                    background:
+                      currentAnswer === option.value
+                        ? "rgba(59, 123, 252, 0.08)"
+                        : "var(--surface-elevated)",
+                    border: `1.5px solid ${
+                      currentAnswer === option.value
+                        ? "var(--color-primary-500)"
+                        : "var(--border)"
+                    }`,
+                  }}
+                >
+                  <span className="flex items-center gap-3">
+                    <span
+                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all min-w-[20px]"
+                      style={{
+                        borderColor:
+                          currentAnswer === option.value
+                            ? "var(--color-primary-500)"
+                            : "var(--border)",
+                      }}
+                    >
+                      {currentAnswer === option.value && (
+                        <span
+                          className="w-2.5 h-2.5 rounded-full animate-scale-in"
+                          style={{ background: "var(--color-primary-500)" }}
+                        />
+                      )}
+                    </span>
+                    {option.label}
+                  </span>
+                </button>
+              ))
+            )}
           </div>
         </div>
 

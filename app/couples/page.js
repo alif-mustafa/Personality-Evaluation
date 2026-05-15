@@ -26,8 +26,10 @@ export default function CouplesPage() {
 
   const [activeTab, setActiveTab] = useState("invite");
   const [partnerEmail, setPartnerEmail] = useState("");
+  const [inviteAssessment, setInviteAssessment] = useState("bigfive");
   const [inviteSent, setInviteSent] = useState(false);
   const [inviteLink, setInviteLink] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
   const [inviteError, setInviteError] = useState("");
   const [pendingInvites, setPendingInvites] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -63,10 +65,11 @@ export default function CouplesPage() {
     if (!partnerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerEmail)) {
       return setInviteError("Please enter a valid email address.");
     }
-    const result = await sendPartnerInvite(partnerEmail.trim());
+    const result = await sendPartnerInvite(partnerEmail.trim(), inviteAssessment);
     if (result.success) {
       setInviteSent(true);
       setInviteLink(result.inviteLink);
+      setEmailSent(result.emailSent ?? false);
     } else {
       setInviteError(result.error || "Failed to send invite.");
     }
@@ -166,32 +169,68 @@ export default function CouplesPage() {
                 <span className="text-3xl">📧</span>
                 <div>
                   <h3 className="text-xl font-bold">Invite Your Partner</h3>
-                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Send them a link to take the same assessments, then compare results.</p>
+                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>An email will be sent with a direct link to the assessment you choose.</p>
                 </div>
               </div>
 
               {!inviteSent ? (
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Partner&apos;s Email Address</label>
-                  <div className="flex gap-3">
-                    <input type="email" value={partnerEmail} onChange={(e) => setPartnerEmail(e.target.value)} placeholder="partner@email.com"
-                      className="flex-1 px-4 py-3 rounded-xl text-sm outline-none transition-all focus:ring-2 focus:ring-[var(--color-primary-500)]/30"
-                      style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--foreground)" }} />
-                    <button onClick={handleSendInvite} className="px-6 py-3 rounded-xl text-sm font-semibold text-white shrink-0 transition-all hover:-translate-y-0.5"
-                      style={{ background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))" }}>
-                      Send Invite
-                    </button>
+                <div className="space-y-4">
+                  {/* Assessment selector */}
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Direct them to this assessment first</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { value: "bigfive", icon: "🌊", label: "Big Five" },
+                        { value: "lovelanguages", icon: "❤️", label: "Love Languages" },
+                        { value: "attachment", icon: "🔗", label: "Attachment" },
+                        { value: "gottman", icon: "⚡", label: "Conflict Styles" },
+                      ].map((a) => (
+                        <button
+                          key={a.value}
+                          type="button"
+                          onClick={() => setInviteAssessment(a.value)}
+                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all"
+                          style={{
+                            background: inviteAssessment === a.value ? "rgba(59,123,252,0.1)" : "var(--background)",
+                            border: inviteAssessment === a.value ? "1px solid rgba(59,123,252,0.4)" : "1px solid var(--border)",
+                            color: inviteAssessment === a.value ? "var(--color-primary-500)" : "var(--text-secondary)",
+                          }}
+                        >
+                          <span>{a.icon}</span> {a.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  {inviteError && <p className="text-xs mt-2" style={{ color: "#f43f5e" }}>{inviteError}</p>}
-                  <p className="text-xs mt-3" style={{ color: "var(--text-tertiary)" }}>Your partner will receive a link to create their own account, take assessments, and automatically link with you.</p>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Partner&apos;s Email Address</label>
+                    <div className="flex gap-3">
+                      <input type="email" value={partnerEmail} onChange={(e) => setPartnerEmail(e.target.value)} placeholder="partner@email.com"
+                        className="flex-1 px-4 py-3 rounded-xl text-sm outline-none transition-all focus:ring-2 focus:ring-[var(--color-primary-500)]/30"
+                        style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--foreground)" }} />
+                      <button onClick={handleSendInvite} className="px-6 py-3 rounded-xl text-sm font-semibold text-white shrink-0 transition-all hover:-translate-y-0.5"
+                        style={{ background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))" }}>
+                        Send Invite
+                      </button>
+                    </div>
+                    {inviteError && <p className="text-xs mt-2" style={{ color: "#f43f5e" }}>{inviteError}</p>}
+                    <p className="text-xs mt-3" style={{ color: "var(--text-tertiary)" }}>Your partner will receive an email with a link that takes them directly to their assessment and links your profiles automatically.</p>
+                  </div>
                 </div>
               ) : (
                 <div className="animate-scale-in">
-                  <div className="flex items-center gap-2 mb-4 p-3 rounded-xl" style={{ background: "rgba(52,211,153,0.1)", border: "1px solid rgba(52,211,153,0.2)" }}>
-                    <span>✅</span>
-                    <p className="text-sm font-medium" style={{ color: "#059669" }}>Invite created for <strong>{partnerEmail}</strong></p>
+                  {/* Email sent / link ready banner */}
+                  <div className="flex items-center gap-2 mb-4 p-3 rounded-xl" style={{ background: emailSent ? "rgba(52,211,153,0.1)" : "rgba(251,191,36,0.1)", border: emailSent ? "1px solid rgba(52,211,153,0.2)" : "1px solid rgba(251,191,36,0.2)" }}>
+                    <span>{emailSent ? "✅" : "📋"}</span>
+                    <p className="text-sm font-medium" style={{ color: emailSent ? "#059669" : "#d97706" }}>
+                      {emailSent
+                        ? <>Email sent to <strong>{partnerEmail}</strong>! They&apos;ll receive a direct link to the assessment.</>  
+                        : <>Invite created. <strong>Copy the link below</strong> and share it with <strong>{partnerEmail}</strong>.</>}
+                    </p>
                   </div>
-                  <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>Share this link with your partner:</p>
+
+                  {/* Always show copyable link as fallback */}
+                  <p className="text-sm mb-2" style={{ color: "var(--text-secondary)" }}>Share this link with your partner:</p>
                   <div className="flex gap-2">
                     <input type="text" readOnly value={inviteLink} className="flex-1 px-3 py-2.5 rounded-lg text-xs font-mono"
                       style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--text-secondary)" }} />
@@ -200,7 +239,7 @@ export default function CouplesPage() {
                       {copied ? "✓ Copied!" : "Copy Link"}
                     </button>
                   </div>
-                  <button onClick={() => { setInviteSent(false); setPartnerEmail(""); }} className="text-xs mt-4 block" style={{ color: "var(--text-tertiary)" }}>
+                  <button onClick={() => { setInviteSent(false); setPartnerEmail(""); setEmailSent(false); }} className="text-xs mt-4 block" style={{ color: "var(--text-tertiary)" }}>
                     ← Send another invite
                   </button>
                 </div>

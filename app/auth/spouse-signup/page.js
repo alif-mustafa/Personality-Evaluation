@@ -136,7 +136,7 @@ function SpouseSignupContent() {
         // Otherwise show success message — user needs to confirm email first
       } else {
         // Demo mode
-        const users = JSON.parse(localStorage.getItem("lumora_users") || "[]");
+        const users = JSON.parse(localStorage.getItem("aptaduo_users") || "[]");
         if (users.find((u) => u.email === form.email.toLowerCase())) {
           throw new Error("An account with this email already exists. Try signing in instead.");
         }
@@ -148,19 +148,19 @@ function SpouseSignupContent() {
           createdAt: new Date().toISOString(),
         };
         users.push(newUser);
-        localStorage.setItem("lumora_users", JSON.stringify(users));
+        localStorage.setItem("aptaduo_users", JSON.stringify(users));
 
         const sessionUser = { id: newUser.id, email: newUser.email, displayName: newUser.displayName };
-        localStorage.setItem("lumora_session", JSON.stringify({ user: sessionUser, profile: null }));
+        localStorage.setItem("aptaduo_session", JSON.stringify({ user: sessionUser, profile: null }));
 
         // Auto-accept invite in demo mode
         if (inviteCode) {
-          const invites = JSON.parse(localStorage.getItem("lumora_invites") || "[]");
+          const invites = JSON.parse(localStorage.getItem("aptaduo_invites") || "[]");
           const idx = invites.findIndex((i) => i.inviteCode === inviteCode);
           if (idx >= 0) {
             invites[idx].status = "accepted";
             invites[idx].partnerId = newUser.id;
-            localStorage.setItem("lumora_invites", JSON.stringify(invites));
+            localStorage.setItem("aptaduo_invites", JSON.stringify(invites));
           }
         }
 
@@ -260,7 +260,7 @@ function SpouseSignupContent() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2">
-            <img src="/Logo.png" alt="Lumora Logo" className="h-20 w-auto mb-2" />
+            <img src="/Logo.png" alt="AptaDuo Logo" className="h-20 w-auto mb-2" />
           </Link>
 
           {/* Invite context banner */}

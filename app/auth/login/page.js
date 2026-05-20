@@ -75,7 +75,7 @@ function LoginContent() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2">
-            <img src="/Logo.png" alt="Lumora Logo" className="h-24 w-auto mb-2" />
+            <img src="/Logo.png" alt="AptaDuo Logo" className="h-24 w-auto mb-2" />
 
           </Link>
           <h1 className="text-2xl font-bold mt-6 mb-1" style={{ fontFamily: "var(--font-outfit)" }}>
@@ -238,7 +238,7 @@ function LoginContent() {
 
         {/* Security note */}
         <p className="text-center text-xs mt-6" style={{ color: "var(--text-tertiary)" }}>
-          🔒 Your data is encrypted and never shared. Lumora is not a diagnostic tool.
+          🔒 Your data is encrypted and never shared. AptaDuo is not a diagnostic tool.
         </p>
       </div>
     </div>

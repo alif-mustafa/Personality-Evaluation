@@ -58,7 +58,7 @@ export default function Home() {
             className="text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-fade-up"
             style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
           >
-            Every couple argues. But most arguments aren't really about the dishes, the silence, or the plans that changed. They're about two different people seeing the world differently. Lumora gently shows you why - and helps you find the light in each other.
+            Every couple argues. But most arguments aren't really about the dishes, the silence, or the plans that changed. They're about two different people seeing the world differently. AptaDuo gently shows you why - and helps you find the light in each other.
           </p>
 
           <div

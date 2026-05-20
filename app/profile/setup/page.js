@@ -130,7 +130,7 @@ export default function ProfileSetupPage() {
               }}
             />
             <p className="text-xs mt-1.5" style={{ color: "var(--text-tertiary)" }}>
-              You must be at least 13 years old to use Lumora.
+              You must be at least 13 years old to use AptaDuo.
             </p>
           </div>
 

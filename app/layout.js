@@ -17,7 +17,7 @@ const outfit = Outfit({
 });
 
 export const metadata = {
-  title: "Lumora — Understand Yourself, Understand Each Other",
+  title: "AptaDuo — Understand Yourself, Understand Each Other",
   description:
     "Free, science-backed personality assessments including Big Five, Attachment Style, and HEXACO. Discover your traits, compare with your partner, and unlock relationship insights.",
   keywords: ["personality test", "Big Five", "attachment style", "HEXACO", "couples", "relationship", "psychology"],
@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
             <Navbar />
             <main className="flex-1">{children}</main>
             <footer className="py-8 text-center text-xs" style={{ color: "var(--text-tertiary)" }}>
-              <p>Lumora · Science-backed personality insights · Not a diagnostic tool</p>
+              <p>AptaDuo · Science-backed personality insights · Not a diagnostic tool</p>
               <p className="mt-1">All assessments are based on peer-reviewed research and are for educational purposes only.</p>
             </footer>
           </AppProvider>

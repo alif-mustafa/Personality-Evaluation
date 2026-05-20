@@ -110,10 +110,10 @@ function JoinContent() {
           {from ? (
             <>
               <strong style={{ color: "var(--foreground)" }}>{decodeURIComponent(from)}</strong>{" "}
-              wants to compare personality profiles with you on Lumora.
+              wants to compare personality profiles with you on AptaDuo.
             </>
           ) : (
-            "Your partner wants to compare personality profiles with you on Lumora."
+            "Your partner wants to compare personality profiles with you on AptaDuo."
           )}
         </p>
 

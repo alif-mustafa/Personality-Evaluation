@@ -1,150 +1,207 @@
 import Link from "next/link";
+import Image from "next/image";
+
+const steps = [
+  {
+    step: "01",
+    img: "/icon_brain.png",
+    title: "Take Assessments",
+    body: "Complete research-backed questionnaires — Big Five, Attachment Style, Love Languages, and Gottman Conflict Styles — in under 10 minutes each.",
+    accent: "var(--color-primary-500)",
+    accentBg: "rgba(124,106,247,0.08)",
+  },
+  {
+    step: "02",
+    img: "/icon_chart.png",
+    title: "See Your Profile",
+    body: "Visualize your personality traits with interactive radar charts and get personalized, empathetic feedback grounded in real psychology.",
+    accent: "#a78bfa",
+    accentBg: "rgba(167,139,250,0.08)",
+  },
+  {
+    step: "03",
+    img: "/icon_couple.png",
+    title: "Couple Insights",
+    body: "Compare profiles with your partner to uncover how you complement each other — and get science-based tools to navigate your differences.",
+    accent: "var(--color-sage-500)",
+    accentBg: "rgba(249,123,107,0.08)",
+  },
+];
 
 export default function Home() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Background shapes */}
+      {/* ── Hero ── */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        {/* Ambient background blobs */}
         <div className="absolute inset-0 pointer-events-none">
-          <div
-            className="hero-shape"
-            style={{
-              width: "500px",
-              height: "500px",
-              background: "linear-gradient(135deg, #3b7bfc, #8b5cf6)",
-              top: "-100px",
-              right: "-100px",
-              animationDelay: "0s",
-            }}
-          />
-          <div
-            className="hero-shape"
-            style={{
-              width: "400px",
-              height: "400px",
-              background: "linear-gradient(135deg, #3a8c69, #34d399)",
-              bottom: "-80px",
-              left: "-80px",
-              animationDelay: "2s",
-            }}
-          />
-          <div
-            className="hero-shape"
-            style={{
-              width: "300px",
-              height: "300px",
-              background: "linear-gradient(135deg, #f59e0b, #f43f5e)",
-              top: "40%",
-              left: "30%",
-              animationDelay: "4s",
-            }}
-          />
+          <div className="hero-shape" style={{ width: "600px", height: "600px", background: "linear-gradient(135deg, #7c6af7, #818cf8)", top: "-150px", right: "-150px", animationDelay: "0s" }} />
+          <div className="hero-shape" style={{ width: "400px", height: "400px", background: "linear-gradient(135deg, #f97b6b, #fb7185)", bottom: "-100px", left: "-100px", animationDelay: "2s" }} />
+          <div className="hero-shape" style={{ width: "250px", height: "250px", background: "linear-gradient(135deg, #f59e0b, #fbbf24)", top: "50%", left: "40%", animationDelay: "4s" }} />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center pt-24 pb-4">
-
-
-          <h1
-            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-fade-up"
-            style={{ fontFamily: "var(--font-outfit), sans-serif", animationDelay: "100ms" }}
-          >
-            Understand Yourself.
-            <br />
-            <span className="gradient-text">Understand Each Other.</span>
-          </h1>
-
-          <p
-            className="text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-fade-up"
-            style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
-          >
-            Every couple argues. But most arguments aren't really about the dishes, the silence, or the plans that changed. They're about two different people seeing the world differently. AptaDuo gently shows you why - and helps you find the light in each other.
-          </p>
-
-          <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 animate-fade-up"
-            style={{ animationDelay: "300ms" }}
-          >
-            <Link
-              href="/assessments"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold text-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
-              style={{
-                background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))",
-                boxShadow: "var(--shadow-glow)",
-              }}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center py-20">
+          {/* Left — copy */}
+          <div className="text-left">
+            <h1
+              className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-extrabold leading-[1.15] mb-6 animate-fade-up whitespace-nowrap tracking-tight"
+              style={{ fontFamily: "var(--font-outfit), sans-serif", animationDelay: "100ms" }}
             >
-              Start Free Assessment
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
+              <span className="block">Understand Yourself,</span>
+              <span className="block gradient-text">Understand Each Other.</span>
+            </h1>
+
+            <p
+              className="text-lg sm:text-xl max-w-xl mb-10 animate-fade-up leading-relaxed"
+              style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
+            >
+              Every couple argues. But most arguments aren&apos;t really about the dishes, the silence, or the plans that changed. They&apos;re about two different people seeing the world differently. AptaDuo gently shows you why, and helps you find the light in each other.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-start gap-4 mb-12 animate-fade-up" style={{ animationDelay: "300ms" }}>
+              <Link
+                href="/assessments"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold text-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+                style={{
+                  background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))",
+                  boxShadow: "var(--shadow-glow)",
+                }}
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
+                Start Free Assessment
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
+                style={{
+                  border: "1px solid var(--border)",
+                  color: "var(--text-secondary)",
+                  background: "var(--surface)",
+                }}
+              >
+                Create Free Account
+              </Link>
+            </div>
 
           </div>
 
+          {/* Right — illustration with floating cards */}
+          <div className="hidden lg:flex justify-center items-center animate-fade-up" style={{ animationDelay: "200ms" }}>
+            <div className="relative" style={{ width: 480, height: 480 }}>
+
+              {/* Large circular soft background — same style as reference */}
+              <div
+                className="absolute"
+                style={{
+                  width: 420,
+                  height: 420,
+                  borderRadius: "50%",
+                  background: "linear-gradient(145deg, rgba(124,106,247,0.07) 0%, rgba(249,123,107,0.07) 100%)",
+                  bottom: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+              />
+
+              {/* Main illustration */}
+              <Image
+                src="/hero_couple.png"
+                alt="A couple in love navigating their differences"
+                width={420}
+                height={420}
+                className="absolute bottom-0 left-1/2 object-contain"
+                style={{ transform: "translateX(-50%)" }}
+                priority
+              />
+
+              {/* Floating card — bottom left: compatibility */}
+              <div
+                className="absolute bottom-16 -left-4 px-4 py-3 rounded-2xl shadow-lg"
+                style={{
+                  background: "white",
+                  border: "1px solid rgba(124,106,247,0.18)",
+                  minWidth: 160,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-base">💬</span>
+                  <span className="text-xs font-semibold" style={{ color: "#1e1b4b" }}>Attachment Style</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div style={{ flex: 1, height: 5, borderRadius: 99, background: "#f0effe" }}>
+                    <div style={{ width: "72%", height: "100%", borderRadius: 99, background: "linear-gradient(90deg,#7c6af7,#a78bfa)" }} />
+                  </div>
+                  <span className="text-xs font-bold" style={{ color: "#7c6af7" }}>Secure</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-12 px-4" style={{ background: "var(--surface)" }}>
+      {/* ── How It Works ── */}
+      <section className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2
-            className="text-3xl sm:text-4xl font-bold text-center mb-4"
-            style={{ fontFamily: "var(--font-outfit)" }}
-          >
-            How It Works
-          </h2>
-          <p className="text-center mb-16 max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
-            Three simple steps to deeper self-understanding and stronger relationships.
-          </p>
+          <div className="text-center mb-16">
+            <h2
+              className="text-3xl sm:text-4xl font-bold mb-4"
+              style={{ fontFamily: "var(--font-outfit)" }}
+            >
+              How It Works
+            </h2>
+            <p className="text-sm max-w-xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+              Three simple steps to deeper self-understanding and stronger relationships.
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-8 stagger">
-            {[
-              {
-                icon: "🧠",
-                title: "Take Assessments",
-                body: "Complete research-backed questionnaires — Big Five, Attachment Style, and HEXACO — in under 10 minutes each.",
-              },
-              {
-                icon: "📊",
-                title: "See Your Profile",
-                body: "Visualize your personality traits with interactive radar charts and get personalized, empathetic feedback.",
-              },
-              {
-                icon: "💑",
-                title: "Couple Insights",
-                body: "Compare profiles with your partner to uncover conflict zones and get attachment-theory-based reframing tools.",
-              },
-            ].map((feature, i) => (
+          <div className="relative grid md:grid-cols-3 gap-6">
+            {/* Connector line — desktop only */}
+            <div
+              className="hidden md:block absolute top-12 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)]"
+              style={{ height: "2px", background: "linear-gradient(90deg, rgba(124,106,247,0.3), rgba(249,123,107,0.3))" }}
+            />
+
+            {steps.map((item) => (
               <div
-                key={i}
-                className="group p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
-                style={{
-                  background: "var(--background)",
-                  border: "1px solid var(--border)",
-                }}
+                key={item.step}
+                className="relative group p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
               >
-                <span className="text-4xl block mb-4 transition-transform duration-300 group-hover:scale-110">
-                  {feature.icon}
-                </span>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
+                {/* Illustration icon + step number */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div
+                    className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
+                    style={{ background: item.accentBg, border: `1px solid ${item.accent}20` }}
+                  >
+                    <Image src={item.img} alt={item.title} width={56} height={56} className="object-contain p-2" />
+                  </div>
+                  <span
+                    className="text-2xl font-extrabold"
+                    style={{ color: item.accent, opacity: 0.25, fontFamily: "var(--font-outfit)" }}
+                  >
+                    {item.step}
+                  </span>
+                </div>
+
+                {/* Accent bar */}
+                <div
+                  className="h-0.5 w-10 rounded-full mb-5 transition-all duration-300 group-hover:w-16"
+                  style={{ background: `linear-gradient(90deg, ${item.accent}, transparent)` }}
+                />
+
+                <h3 className="text-lg font-bold mb-3">{item.title}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                  {feature.body}
+                  {item.body}
                 </p>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { Inter, Outfit } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { AppProvider } from "@/lib/context";
@@ -19,8 +20,8 @@ const outfit = Outfit({
 export const metadata = {
   title: "AptaDuo — Understand Yourself, Understand Each Other",
   description:
-    "Free, science-backed personality assessments including Big Five, Attachment Style, and HEXACO. Discover your traits, compare with your partner, and unlock relationship insights.",
-  keywords: ["personality test", "Big Five", "attachment style", "HEXACO", "couples", "relationship", "psychology"],
+    "Free, science-backed personality assessments including Big Five, Attachment Style, Love Languages, and Gottman Conflict Styles. Discover your traits, compare with your partner, and unlock relationship insights.",
+  keywords: ["personality test", "Big Five", "attachment style", "love languages", "Gottman", "couples", "relationship", "psychology"],
 };
 
 export default function RootLayout({ children }) {
@@ -34,10 +35,20 @@ export default function RootLayout({ children }) {
           <AppProvider>
             <Navbar />
             <main className="flex-1">{children}</main>
-            <footer className="py-8 text-center text-xs" style={{ color: "var(--text-tertiary)" }}>
-              <p>AptaDuo · Science-backed personality insights · Not a diagnostic tool</p>
-              <p className="mt-1">All assessments are based on peer-reviewed research and are for educational purposes only.</p>
+
+            {/* ── Footer ── */}
+            <footer className="py-8 border-t" style={{ background: "var(--surface)", borderColor: "var(--border)" }}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 text-xs" style={{ color: "var(--text-tertiary)" }}>
+                <span>© {new Date().getFullYear()} AptaDuo</span>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/privacy" className="hover:opacity-70 transition-opacity">Privacy Policy</Link>
+                <span className="hidden sm:inline">|</span>
+                <Link href="/terms" className="hover:opacity-70 transition-opacity">Terms of Service</Link>
+                <span className="hidden sm:inline">|</span>
+                <a href="mailto:aptaduo@gmail.com" className="hover:opacity-70 transition-opacity">Contact</a>
+              </div>
             </footer>
+
           </AppProvider>
         </AuthProvider>
       </body>

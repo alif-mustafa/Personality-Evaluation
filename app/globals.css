@@ -96,6 +96,19 @@
   scrollbar-color: var(--border) transparent;
 }
 
+button, 
+[role="button"], 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"] {
+  cursor: pointer;
+}
+
+button:disabled, 
+input:disabled {
+  cursor: not-allowed;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

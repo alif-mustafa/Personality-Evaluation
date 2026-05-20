@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import HeroCarousel from "@/components/HeroCarousel";
 
 const steps = [
   {
@@ -87,57 +88,9 @@ export default function Home() {
 
           </div>
 
-          {/* Right — illustration with floating cards */}
+          {/* Right — rotating illustration carousel */}
           <div className="hidden lg:flex justify-center items-center animate-fade-up" style={{ animationDelay: "200ms" }}>
-            <div className="relative" style={{ width: 480, height: 480 }}>
-
-              {/* Large circular soft background — same style as reference */}
-              <div
-                className="absolute"
-                style={{
-                  width: 420,
-                  height: 420,
-                  borderRadius: "50%",
-                  background: "linear-gradient(145deg, rgba(124,106,247,0.07) 0%, rgba(249,123,107,0.07) 100%)",
-                  bottom: 0,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                }}
-              />
-
-              {/* Main illustration */}
-              <Image
-                src="/hero_couple.png"
-                alt="A couple in love navigating their differences"
-                width={420}
-                height={420}
-                className="absolute bottom-0 left-1/2 object-contain"
-                style={{ transform: "translateX(-50%)" }}
-                priority
-              />
-
-              {/* Floating card — bottom left: compatibility */}
-              <div
-                className="absolute bottom-16 -left-4 px-4 py-3 rounded-2xl shadow-lg"
-                style={{
-                  background: "white",
-                  border: "1px solid rgba(124,106,247,0.18)",
-                  minWidth: 160,
-                }}
-              >
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-base">💬</span>
-                  <span className="text-xs font-semibold" style={{ color: "#1e1b4b" }}>Attachment Style</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div style={{ flex: 1, height: 5, borderRadius: 99, background: "#f0effe" }}>
-                    <div style={{ width: "72%", height: "100%", borderRadius: 99, background: "linear-gradient(90deg,#7c6af7,#a78bfa)" }} />
-                  </div>
-                  <span className="text-xs font-bold" style={{ color: "#7c6af7" }}>Secure</span>
-                </div>
-              </div>
-
-            </div>
+            <HeroCarousel />
           </div>
 
         </div>

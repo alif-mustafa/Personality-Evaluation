@@ -36,16 +36,15 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         {/* Ambient background blobs */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="hero-shape" style={{ width: "600px", height: "600px", background: "linear-gradient(135deg, #7c6af7, #818cf8)", top: "-150px", right: "-150px", animationDelay: "0s" }} />
-          <div className="hero-shape" style={{ width: "400px", height: "400px", background: "linear-gradient(135deg, #f97b6b, #fb7185)", bottom: "-100px", left: "-100px", animationDelay: "2s" }} />
-          <div className="hero-shape" style={{ width: "250px", height: "250px", background: "linear-gradient(135deg, #f59e0b, #fbbf24)", top: "50%", left: "40%", animationDelay: "4s" }} />
+          <div className="hero-shape" style={{ width: "300px", height: "300px", background: "linear-gradient(135deg, #7c6af7, #818cf8)", top: "-80px", right: "-80px", animationDelay: "0s" }} />
+          <div className="hero-shape" style={{ width: "250px", height: "250px", background: "linear-gradient(135deg, #f97b6b, #fb7185)", bottom: "-60px", left: "-60px", animationDelay: "2s" }} />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center py-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center py-16 lg:py-20">
           {/* Left — copy */}
-          <div className="text-left">
+          <div className="text-center lg:text-left">
             <h1
-              className="text-4xl sm:text-5xl lg:text-4xl xl:text-5xl font-extrabold leading-[1.15] mb-6 animate-fade-up whitespace-nowrap tracking-tight"
+              className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold leading-[1.15] mb-6 animate-fade-up tracking-tight"
               style={{ fontFamily: "var(--font-outfit), sans-serif", animationDelay: "100ms" }}
             >
               <span className="block">Understand Yourself,</span>
@@ -53,29 +52,29 @@ export default function Home() {
             </h1>
 
             <p
-              className="text-lg sm:text-xl max-w-xl mb-10 animate-fade-up leading-relaxed"
+              className="text-base sm:text-lg max-w-xl mb-8 animate-fade-up leading-relaxed mx-auto lg:mx-0"
               style={{ color: "var(--text-secondary)", animationDelay: "200ms" }}
             >
               Every couple argues. But most arguments aren&apos;t really about the dishes, the silence, or the plans that changed. They&apos;re about two different people seeing the world differently. AptaDuo gently shows you why, and helps you find the light in each other.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-start gap-4 mb-12 animate-fade-up" style={{ animationDelay: "300ms" }}>
+            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3 mb-10 animate-fade-up" style={{ animationDelay: "300ms" }}>
               <Link
                 href="/assessments"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold text-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-base font-semibold text-white transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
                 style={{
                   background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))",
                   boxShadow: "var(--shadow-glow)",
                 }}
               >
                 Start Free Assessment
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
                 style={{
                   border: "1px solid var(--border)",
                   color: "var(--text-secondary)",
@@ -89,7 +88,7 @@ export default function Home() {
           </div>
 
           {/* Right — rotating illustration carousel */}
-          <div className="hidden lg:flex justify-center items-center animate-fade-up" style={{ animationDelay: "200ms" }}>
+          <div className="flex justify-center items-center animate-fade-up" style={{ animationDelay: "200ms" }}>
             <HeroCarousel />
           </div>
 
@@ -97,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* ── How It Works ── */}
-      <section className="py-24 px-4">
+      <section className="py-16 sm:py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2
@@ -121,7 +120,7 @@ export default function Home() {
             {steps.map((item) => (
               <div
                 key={item.step}
-                className="relative group p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="relative group p-5 sm:p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
               >
                 {/* Illustration icon + step number */}

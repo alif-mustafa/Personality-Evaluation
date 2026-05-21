@@ -130,7 +130,8 @@ export default function CouplesPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-8 p-1 rounded-xl w-fit flex-wrap" style={{ background: "var(--border-subtle)" }}>
+        <div className="overflow-x-auto pb-1 mb-8">
+        <div className="flex gap-1 p-1 rounded-xl w-fit min-w-full sm:min-w-0" style={{ background: "var(--border-subtle)" }}>
           {[
             { id: "invite", label: "Invite Partner", icon: "📧" },
             { id: "heatmap", label: "Conflict Heatmap", icon: "🔥" },
@@ -142,6 +143,7 @@ export default function CouplesPage() {
               <span className="mr-1.5">{tab.icon}</span>{tab.label}
             </button>
           ))}
+        </div>
         </div>
 
         {/* ===== INVITE TAB ===== */}

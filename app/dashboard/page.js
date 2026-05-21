@@ -54,7 +54,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6">
           {/* Assessment Progress */}
           <div
             className="lg:col-span-2 rounded-2xl p-6"

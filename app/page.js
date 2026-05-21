@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
+import { useAuth } from "@/lib/auth-context";
 
 const steps = [
   {
@@ -30,6 +33,8 @@ const steps = [
 ];
 
 export default function Home() {
+  const { user } = useAuth();
+
   return (
     <>
       {/* ── Hero ── */}
@@ -72,17 +77,19 @@ export default function Home() {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
-              <Link
-                href="/auth/signup"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
-                style={{
-                  border: "1px solid var(--border)",
-                  color: "var(--text-secondary)",
-                  background: "var(--surface)",
-                }}
-              >
-                Create Free Account
-              </Link>
+              {!user && (
+                <Link
+                  href="/auth/signup"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-base font-semibold transition-all duration-300 hover:-translate-y-0.5"
+                  style={{
+                    border: "1px solid var(--border)",
+                    color: "var(--text-secondary)",
+                    background: "var(--surface)",
+                  }}
+                >
+                  Create Free Account
+                </Link>
+              )}
             </div>
 
           </div>

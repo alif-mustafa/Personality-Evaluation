@@ -7,32 +7,32 @@ const slides = [
   {
     src: "/hero_couple.png",
     alt: "A couple on a sofa — she's on her phone while he tries to connect",
-    card1: { icon: "💬", label: "Her Attachment Style", value: "Anxious", pct: 38, color: "#f97b6b" },
+    card1: { icon: "🧠", label: "Her Attachment Style", value: "Anxious", pct: 38, color: "#f97b6b" },
     card2: { icon: "🧠", label: "His Attachment Style", value: "Secure", pct: 78, color: "#7c6af7" },
   },
   {
     src: "/couple_2.png",
     alt: "Two women at a kitchen table — one reaching out, the other withdrawn",
     card1: { icon: "💝", label: "Her Love Language", value: "Quality Time", pct: 85, color: "#7c6af7" },
-    card2: { icon: "🌟", label: "Her Love Language", value: "Acts of Service", pct: 60, color: "#f97b6b" },
+    card2: { icon: "💝", label: "Her Love Language", value: "Acts of Service", pct: 60, color: "#f97b6b" },
   },
   {
     src: "/couple_3.png",
     alt: "Two men — one comforting the other who is stressed",
     card1: { icon: "🤝", label: "His Conflict Style", value: "Validator", pct: 74, color: "#7c6af7" },
-    card2: { icon: "🌱", label: "His Big Five", value: "High Empathy", pct: 88, color: "#10b981" },
+    card2: { icon: "🤝", label: "His Conflict Style", value: "Avoider", pct: 45, color: "#f97b6b" },
   },
   {
     src: "/couple_4.png",
     alt: "An Asian couple — one on their phone, the other feeling distant",
-    card1: { icon: "💬", label: "Her Attachment Style", value: "Dismissive", pct: 30, color: "#f97b6b" },
-    card2: { icon: "💝", label: "His Love Language", value: "Quality Time", pct: 90, color: "#7c6af7" },
+    card1: { icon: "🧠", label: "Her Attachment Style", value: "Dismissive", pct: 30, color: "#f97b6b" },
+    card2: { icon: "🧠", label: "His Attachment Style", value: "Anxious", pct: 85, color: "#7c6af7" },
   },
   {
     src: "/couple_5.png",
     alt: "An older couple on a porch — talking, laughing, holding hands",
-    card1: { icon: "🕊️", label: "Her Conflict Style", value: "Validator", pct: 82, color: "#7c6af7" },
-    card2: { icon: "🧠", label: "His Big Five", value: "High Openness", pct: 76, color: "#f59e0b" },
+    card1: { icon: "🌱", label: "Her Personality", value: "Introvert", pct: 88, color: "#10b981" },
+    card2: { icon: "🌱", label: "His Personality", value: "Extrovert", pct: 76, color: "#f59e0b" },
   },
 ];
 

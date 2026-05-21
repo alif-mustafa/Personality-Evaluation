@@ -70,12 +70,24 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {assessments.map((a) => {
                 const completed = !!results[a.type];
+                
+                const href = completed ? `/results/${a.type}` : `/assessments/${a.type}`;
+                const wrapperProps = { href, className: "flex items-center gap-4 group cursor-pointer transition-opacity hover:opacity-80" };
+
                 return (
-                  <div key={a.type} className="flex items-center gap-4">
+                  <Link key={a.type} {...wrapperProps}>
                     <span className="text-xl w-8">{a.icon}</span>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm font-medium">{a.label}</span>
+                        <span className="text-sm font-medium flex items-center gap-2">
+                          {a.label}
+                          <span 
+                            className="text-xs font-normal opacity-0 group-hover:opacity-100 transition-opacity" 
+                            style={{ color: "var(--color-primary-500)" }}
+                          >
+                            {completed ? "View Results →" : "Start Assessment →"}
+                          </span>
+                        </span>
                         <span
                           className="text-xs font-semibold px-2 py-0.5 rounded-full"
                           style={{
@@ -97,7 +109,7 @@ export default function DashboardPage() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

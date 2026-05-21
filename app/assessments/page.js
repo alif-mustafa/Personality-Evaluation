@@ -75,7 +75,7 @@ export default function AssessmentsPage() {
             return (
               <Link
                 key={assessment.type}
-                href={`/assessments/${assessment.type}`}
+                href={completed ? `/results/${assessment.type}` : `/assessments/${assessment.type}`}
                 className="group block rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 style={{
                   background: assessment.gradient,
@@ -123,12 +123,14 @@ export default function AssessmentsPage() {
                       >
                         ⏱ {assessment.time}
                       </span>
-                      <span
-                        className="text-sm font-semibold transition-all duration-200 group-hover:translate-x-1"
-                        style={{ color: assessment.accentColor }}
-                      >
-                        {completed ? "Retake →" : "Start →"}
-                      </span>
+                      <div className="flex items-center gap-4">
+                        <span
+                          className="text-sm font-semibold transition-all duration-200 group-hover:translate-x-1"
+                          style={{ color: assessment.accentColor }}
+                        >
+                          {completed ? "View Results →" : "Start →"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

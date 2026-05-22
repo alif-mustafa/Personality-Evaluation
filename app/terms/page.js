@@ -87,7 +87,7 @@ export default function TermsPage() {
 
           <Section title="7. Intellectual Property">
             <p>
-              The AptaDuo platform, including its design, code, assessment scoring logic, and content, is our intellectual property. The underlying psychological frameworks (Big Five, ECR-R, Love Languages, Gottman) are based on published academic research. You may not reproduce or distribute our platform content without written permission.
+              The AptaDuo platform, including its design, code, assessment scoring logic, and content, is our intellectual property. The underlying psychological frameworks (Core Personality, ECR-R, Love Languages, Gottman) are based on published academic research. You may not reproduce or distribute our platform content without written permission.
             </p>
           </Section>
 

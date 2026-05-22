@@ -10,7 +10,7 @@ const steps = [
     step: "01",
     img: "/icon_brain.png",
     title: "Take Assessments",
-    body: "Complete research-backed questionnaires — Big Five, Attachment Style, Love Languages, and Gottman Conflict Styles — in under 10 minutes each.",
+    body: "Complete research-backed questionnaires — Core Personality, Attachment Style, Love Languages, and Gottman Conflict Styles — in under 10 minutes each.",
     accent: "var(--color-primary-500)",
     accentBg: "rgba(124,106,247,0.08)",
   },

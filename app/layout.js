@@ -20,8 +20,8 @@ const outfit = Outfit({
 export const metadata = {
   title: "AptaDuo — Understand Yourself, Understand Each Other",
   description:
-    "Free, science-backed personality assessments including Big Five, Attachment Style, Love Languages, and Gottman Conflict Styles. Discover your traits, compare with your partner, and unlock relationship insights.",
-  keywords: ["personality test", "Big Five", "attachment style", "love languages", "Gottman", "couples", "relationship", "psychology"],
+    "Free, science-backed personality assessments including Core Personality, Attachment Style, Love Languages, and Gottman Conflict Styles. Discover your traits, compare with your partner, and unlock relationship insights.",
+  keywords: ["personality test", "Core Personality", "attachment style", "love languages", "Gottman", "couples", "relationship", "psychology"],
 };
 
 export default function RootLayout({ children }) {

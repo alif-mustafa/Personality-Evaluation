@@ -7,7 +7,7 @@ const ASSESSMENTS = [
   {
     type: "bigfive",
     icon: "🌊",
-    title: "The Foundation: Big Five",
+    title: "Core Personality",
     badge: "44 Questions",
     time: "~8 min",
     description:
@@ -18,7 +18,7 @@ const ASSESSMENTS = [
   {
     type: "lovelanguages",
     icon: "❤️",
-    title: "The Fuel: Love Languages",
+    title: "Love Languages",
     badge: "30 Questions",
     time: "~6 min",
     description:
@@ -29,7 +29,7 @@ const ASSESSMENTS = [
   {
     type: "attachment",
     icon: "🔗",
-    title: "The Safety: Attachment (ECR-R)",
+    title: "Attachment Style",
     badge: "36 Questions",
     time: "~7 min",
     description:
@@ -40,7 +40,7 @@ const ASSESSMENTS = [
   {
     type: "gottman",
     icon: "⚡",
-    title: "The Method: Conflict Styles",
+    title: "Conflict Styles",
     badge: "20 Questions",
     time: "~4 min",
     description:

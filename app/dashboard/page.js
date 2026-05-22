@@ -20,7 +20,7 @@ export default function DashboardPage() {
 
   const hasAnyResults = Object.keys(results).length > 0;
   const assessments = [
-    { type: "bigfive", label: "Big Five", icon: "🌊" },
+    { type: "bigfive", label: "Core Personality", icon: "🌊" },
     { type: "lovelanguages", label: "Love Languages", icon: "❤️" },
     { type: "attachment", label: "Attachment Style", icon: "🔗" },
     { type: "gottman", label: "Conflict Styles", icon: "⚡" },
@@ -196,7 +196,7 @@ export default function DashboardPage() {
               </div>
             ) : (
               <p className="text-sm py-8 text-center" style={{ color: "var(--text-tertiary)" }}>
-                Complete the Big Five assessment to see your trait radar.
+                Complete the Core Personality assessment to see your trait radar.
               </p>
             )}
           </div>

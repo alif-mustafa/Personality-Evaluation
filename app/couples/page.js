@@ -182,7 +182,7 @@ export default function CouplesPage() {
                     <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Direct them to this assessment first</label>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { value: "bigfive", icon: "🌊", label: "Big Five" },
+                        { value: "bigfive", icon: "🌊", label: "Core Personality" },
                         { value: "lovelanguages", icon: "❤️", label: "Love Languages" },
                         { value: "attachment", icon: "🔗", label: "Attachment" },
                         { value: "gottman", icon: "⚡", label: "Conflict Styles" },

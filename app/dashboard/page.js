@@ -23,7 +23,7 @@ export default function DashboardPage() {
     { type: "bigfive", label: "Core Personality", icon: "🌊" },
     { type: "lovelanguages", label: "Love Languages", icon: "❤️" },
     { type: "attachment", label: "Attachment Style", icon: "🔗" },
-    { type: "gottman", label: "Conflict Styles", icon: "⚡" },
+    { type: "gottman", label: "Couple Conflict Style", icon: "⚡" },
   ];
 
   // Prepare radar data from Big Five if available

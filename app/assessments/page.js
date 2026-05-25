@@ -40,11 +40,11 @@ const ASSESSMENTS = [
   {
     type: "gottman",
     icon: "⚡",
-    title: "Conflict Styles",
+    title: "Couple Conflict Style",
     badge: "20 Questions",
     time: "~4 min",
     description:
-      "How they communicate during a 'clash'. Identify your Gottman conflict style: Validating, Volatile, Conflict-Avoiding, Hostile, or Hostile-Detached.",
+      "How you communicate as a couple during conflict. Both partners complete this assessment separately, and the results are combined to reveal your shared Gottman conflict style: Validating, Volatile, Conflict-Avoiding, Hostile, or Hostile-Detached.",
     gradient: "linear-gradient(135deg, #8b5cf608, #3a8c6910)",
     accentColor: "#8b5cf6",
   },

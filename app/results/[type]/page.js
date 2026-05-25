@@ -147,41 +147,57 @@ export default function ResultsPage({ params }) {
                     {result.feedback.description || result.feedback.body}
                   </p>
 
-                  {result.feedback.strengths && (
-                    <div className="mb-4">
-                      <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--text-tertiary)" }}>
-                        Your Strengths
-                      </h4>
-                      <ul className="space-y-1">
-                        {result.feedback.strengths.map((s, i) => (
-                          <li
-                            key={i}
-                            className="text-sm flex items-center gap-2"
-                            style={{ color: "var(--text-secondary)" }}
-                          >
-                            <span style={{ color: "var(--color-sage-400)" }}>✓</span>
-                            {s}
-                          </li>
-                        ))}
-                      </ul>
+                  {result.feedback.partial ? (
+                    <div className="mt-6 flex justify-center">
+                      <Link
+                        href="/couples"
+                        className="inline-flex px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-md hover:-translate-y-0.5"
+                        style={{
+                          background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))",
+                        }}
+                      >
+                        Invite Partner & Compare →
+                      </Link>
                     </div>
-                  )}
+                  ) : (
+                    <>
+                      {result.feedback.strengths && (
+                        <div className="mb-4">
+                          <h4 className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "var(--text-tertiary)" }}>
+                            Your Strengths
+                          </h4>
+                          <ul className="space-y-1">
+                            {result.feedback.strengths.map((s, i) => (
+                              <li
+                                key={i}
+                                className="text-sm flex items-center gap-2"
+                                style={{ color: "var(--text-secondary)" }}
+                              >
+                                <span style={{ color: "var(--color-sage-400)" }}>✓</span>
+                                {s}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                  {result.feedback.tip && (
-                    <div
-                      className="p-4 rounded-xl"
-                      style={{
-                        background: "var(--color-sage-500)/8",
-                        borderLeft: "3px solid var(--color-sage-400)",
-                      }}
-                    >
-                      <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "var(--color-sage-500)" }}>
-                        💡 Growth Tip
-                      </p>
-                      <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                        {result.feedback.tip}
-                      </p>
-                    </div>
+                      {result.feedback.tip && (
+                        <div
+                          className="p-4 rounded-xl"
+                          style={{
+                            background: "var(--color-sage-500)/8",
+                            borderLeft: "3px solid var(--color-sage-400)",
+                          }}
+                        >
+                          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: "var(--color-sage-500)" }}>
+                            💡 Growth Tip
+                          </p>
+                          <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            {result.feedback.tip}
+                          </p>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
 

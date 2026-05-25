@@ -8,14 +8,12 @@ import { generateConflictReport } from '@/lib/conflictEngine';
 const defaultPartnerA = {
   loveLanguage:  { primary: 'words', secondary: 'time' },
   bigFive:       { openness: 3.8, conscientiousness: 4.2, extraversion: 2.5, agreeableness: 4.0, neuroticism: 4.5 },
-  conflictStyle: { dominantStyle: 'Conflict-Avoiding' },
   attachment:    { anxietyScore: 5.8, avoidanceScore: 2.1 }
 };
 
 const defaultPartnerB = {
   loveLanguage:  { primary: 'touch', secondary: 'acts' },
   bigFive:       { openness: 4.2, conscientiousness: 2.8, extraversion: 4.0, agreeableness: 2.5, neuroticism: 2.0 },
-  conflictStyle: { dominantStyle: 'Volatile' },
   attachment:    { anxietyScore: 2.0, avoidanceScore: 5.2 }
 };
 
@@ -31,15 +29,16 @@ export default function PlaygroundPage() {
 
   const [partnerA, setPartnerA] = useState(defaultPartnerA);
   const [partnerB, setPartnerB] = useState(defaultPartnerB);
+  const [coupleStyle, setCoupleStyle] = useState('Volatile');
 
   const report = useMemo(() => {
     try {
-      return generateConflictReport(partnerA, partnerB);
+      return generateConflictReport(partnerA, partnerB, { coupleConflictStyle: coupleStyle });
     } catch (e) {
       console.error(e);
       return null;
     }
-  }, [partnerA, partnerB]);
+  }, [partnerA, partnerB, coupleStyle]);
 
   const updatePartner = (setter, category, field, value) => {
     setter(prev => ({
@@ -113,21 +112,6 @@ export default function PlaygroundPage() {
         </div>
       </div>
 
-      {/* Conflict Style */}
-      <div className="mb-6">
-        <h3 className="text-sm font-bold uppercase text-gray-500 mb-3 tracking-wider">Conflict Style</h3>
-        <div>
-          <label className="block text-sm text-gray-700 mb-1">Dominant Style</label>
-          <select 
-            className="w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500"
-            value={partner.conflictStyle.dominantStyle}
-            onChange={(e) => updatePartner(setter, 'conflictStyle', 'dominantStyle', e.target.value)}
-          >
-            {conflictStyleOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-          </select>
-        </div>
-      </div>
-
       {/* Big Five */}
       <div>
         <h3 className="text-sm font-bold uppercase text-gray-500 mb-3 tracking-wider">Big Five (1-5)</h3>
@@ -163,9 +147,25 @@ export default function PlaygroundPage() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column: Inputs */}
-          <div className="flex flex-col md:flex-row gap-6 lg:w-2/3">
-            {renderPartnerControls('Partner A', partnerA, setPartnerA)}
-            {renderPartnerControls('Partner B', partnerB, setPartnerB)}
+          <div className="flex flex-col gap-6 lg:w-2/3">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h2 className="text-xl font-semibold mb-4 text-indigo-900 border-b pb-2">Couple Conflict Style</h2>
+              <div className="w-full md:w-1/2">
+                <label className="block text-sm text-gray-700 mb-1">Shared Dynamic</label>
+                <select 
+                  className="w-full border border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500"
+                  value={coupleStyle}
+                  onChange={(e) => setCoupleStyle(e.target.value)}
+                >
+                  {conflictStyleOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex flex-col md:flex-row gap-6">
+              {renderPartnerControls('Partner A', partnerA, setPartnerA)}
+              {renderPartnerControls('Partner B', partnerB, setPartnerB)}
+            </div>
           </div>
 
           {/* Right Column: Output */}
@@ -222,7 +222,7 @@ export default function PlaygroundPage() {
                         <span className="text-gray-700 font-medium">Conflict Style (25%)</span>
                         <div className="text-right">
                           <span className="font-mono text-indigo-700 font-bold bg-indigo-100 px-2 py-0.5 rounded">{report.clashes.conflictStyle.score}</span>
-                          <span className="text-xs text-gray-500 mt-1 block">{report.clashes.conflictStyle.styleA} vs {report.clashes.conflictStyle.styleB}</span>
+                          <span className="text-xs text-gray-500 mt-1 block">{report.clashes.conflictStyle.coupleStyle}</span>
                         </div>
                       </div>
                       <div className="flex justify-between items-center text-sm">

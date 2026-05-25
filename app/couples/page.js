@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useApp } from "@/lib/context";
 import { useAuth } from "@/lib/auth-context";
 import { generateConflictHeatmap, generateReframingInsights } from "@/lib/couples";
+import { scoreGottmanCouple } from "@/lib/scoring";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -21,7 +22,7 @@ const SEVERITY_COLORS = {
 };
 
 export default function CouplesPage() {
-  const { results, couple, updateCoupleScores, updateCoupleAttachment, saveCoupleHeatmap, saveCoupleReframing } = useApp();
+  const { results, couple, updateCoupleScores, updateCoupleAttachment, saveCoupleHeatmap, saveCoupleReframing, saveCoupleConflictStyle } = useApp();
   const { user, sendPartnerInvite, checkInvites, acceptInvite } = useAuth();
 
   const [activeTab, setActiveTab] = useState("invite");
@@ -103,6 +104,19 @@ export default function CouplesPage() {
     setActiveTab("heatmap");
   };
 
+  const handleGenerateDemoCoupleStyle = () => {
+    if (!results.gottman) return;
+    
+    // Generate random 1-5 responses for partner B to simulate them completing the test
+    const fakePartnerResponses = {};
+    for (let i = 1; i <= 20; i++) {
+      fakePartnerResponses[`g${i}`] = Math.floor(Math.random() * 5) + 1;
+    }
+    
+    const coupleResult = scoreGottmanCouple(results.gottman.responses, fakePartnerResponses);
+    saveCoupleConflictStyle(coupleResult);
+  };
+
   const hasEnoughScores = Object.keys(getPartnerAScores()).length >= 3 && Object.keys(partnerBScores).length >= 3;
 
   if (!user) {
@@ -134,6 +148,7 @@ export default function CouplesPage() {
         <div className="flex gap-1 p-1 rounded-xl w-fit min-w-full sm:min-w-0" style={{ background: "var(--border-subtle)" }}>
           {[
             { id: "invite", label: "Invite Partner", icon: "📧" },
+            { id: "style", label: "Couple Style", icon: "⚡" },
             { id: "heatmap", label: "Conflict Heatmap", icon: "🔥" },
             { id: "reframing", label: "Reframing Tool", icon: "🔄" },
           ].map((tab) => (
@@ -430,6 +445,101 @@ export default function CouplesPage() {
                 <h3 className="text-xl font-semibold mb-2">Reframing Tool</h3>
                 <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>Select attachment styles and generate a heatmap to unlock reframing insights.</p>
                 <button onClick={() => setActiveTab("invite")} className="px-6 py-2.5 rounded-lg text-sm font-semibold" style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>Go to Invite</button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ===== COUPLE STYLE TAB ===== */}
+        {activeTab === "style" && (
+          <div className="animate-fade-up">
+            {couple?.gottmanCoupleResult ? (
+              <div className="space-y-6">
+                <div className="rounded-3xl p-6 sm:p-8" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: "rgba(139,92,246,0.1)", color: "#8b5cf6" }}>⚡</div>
+                    <div>
+                      <h2 className="text-xl font-bold">Couple Conflict Style</h2>
+                      <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Your shared interaction dynamic</p>
+                    </div>
+                  </div>
+
+                  <div className="text-center mb-8 p-8 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.05), transparent)", border: "1px solid var(--border)" }}>
+                    <div className="inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4" 
+                      style={{ 
+                        background: couple.conflictStyleStability === "stable" ? "var(--color-sage-500)" : "rgba(244,63,94,0.15)", 
+                        color: couple.conflictStyleStability === "stable" ? "#fff" : "#e11d48"
+                      }}>
+                      {couple.conflictStyleStability === "stable" ? "Healthy & Stable" : "Unstable Pattern"}
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-black tracking-tight mb-4" style={{ fontFamily: "var(--font-outfit)" }}>
+                      {couple.coupleConflictStyle}
+                    </h3>
+                    <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+                      {couple.gottmanCoupleResult.feedback.description}
+                    </p>
+                  </div>
+
+                  {couple.gottmanCoupleResult.feedback.strengths && (
+                    <div className="mb-6 p-6 rounded-2xl" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
+                      <h4 className="font-bold mb-4">What Works Well</h4>
+                      <ul className="space-y-3">
+                        {couple.gottmanCoupleResult.feedback.strengths.map((s, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+                            <span style={{ color: "var(--color-sage-500)" }}>✓</span> {s}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {couple.gottmanCoupleResult.feedback.patterns && (
+                    <div className="mb-6 p-6 rounded-2xl" style={{ background: "rgba(244,63,94,0.05)", border: "1px solid rgba(244,63,94,0.2)" }}>
+                      <h4 className="font-bold mb-4" style={{ color: "#e11d48" }}>Friction Patterns</h4>
+                      <ul className="space-y-3">
+                        {couple.gottmanCoupleResult.feedback.patterns.map((p, i) => (
+                          <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+                            <span style={{ color: "#e11d48" }}>⚠</span> {p}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {couple.gottmanCoupleResult.feedback.tip && (
+                    <div className="p-6 rounded-2xl" style={{ background: "var(--background)", borderLeft: "4px solid #8b5cf6" }}>
+                      <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#8b5cf6" }}>💡 Growth Tip</p>
+                      <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                        {couple.gottmanCoupleResult.feedback.tip}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center p-12 rounded-3xl" style={{ background: "var(--surface)", border: "1px dashed var(--border)" }}>
+                <span className="text-4xl block mb-4 opacity-50">⚡</span>
+                <h3 className="text-lg font-bold mb-2">Couple Style Not Generated</h3>
+                
+                {!results.gottman ? (
+                  <>
+                    <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
+                      You need to complete the Couple Conflict Style assessment first.
+                    </p>
+                    <Link href="/assessments/gottman" className="px-6 py-3 rounded-xl text-sm font-semibold text-white" style={{ background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))" }}>
+                      Take Assessment
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm mb-6" style={{ color: "var(--text-secondary)", maxWidth: "400px", margin: "0 auto 24px" }}>
+                      Your responses are recorded. In a full implementation, your partner would accept an invite and complete the assessment to generate the shared couple style.
+                    </p>
+                    <button onClick={handleGenerateDemoCoupleStyle} className="px-6 py-3 rounded-xl text-sm font-semibold text-white transition-all hover:shadow-lg" style={{ background: "linear-gradient(135deg, #8b5cf6, #6d28d9)" }}>
+                      Demo: Simulate Partner Responses
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>

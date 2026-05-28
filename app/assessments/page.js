@@ -3,10 +3,53 @@
 import Link from "next/link";
 import { useApp } from "@/lib/context";
 
+// Professional SVG icons — clean, warm, and trustworthy
+const IconPersonality = ({ color }) => (
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="11" r="6" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M6 30c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M24 16l2 2 4-4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const IconLoveLanguages = ({ color }) => (
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 30S6 22 6 14a7 7 0 0 1 12-4.9A7 7 0 0 1 30 14c0 8-12 16-12 16z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 14h12M18 8v12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
+const IconAttachment = ({ color }) => (
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Anchor — represents Bowlby's secure base theory */}
+    <circle cx="18" cy="9" r="3" stroke={color} strokeWidth="2"/>
+    <path d="M18 12v18" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M10 16h16" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M10 16c0 6 4 10 8 14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M26 16c0 6-4 10-8 14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
+const IconGottman = ({ color }) => (
+  <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Two dialogue bubbles — represents couple communication */}
+    <rect x="4" y="6" width="18" height="13" rx="4" stroke={color} strokeWidth="2"/>
+    <path d="M7 19l-3 4 5-2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="14" y="17" width="18" height="13" rx="4" stroke={color} strokeWidth="2"/>
+    <path d="M29 30l3 4-5-2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const ASSESSMENT_ICONS = {
+  bigfive: IconPersonality,
+  lovelanguages: IconLoveLanguages,
+  attachment: IconAttachment,
+  gottman: IconGottman,
+};
+
 const ASSESSMENTS = [
   {
     type: "bigfive",
-    icon: "🌊",
     title: "Core Personality",
     badge: "44 Questions",
     time: "~8 min",
@@ -17,7 +60,6 @@ const ASSESSMENTS = [
   },
   {
     type: "lovelanguages",
-    icon: "❤️",
     title: "Love Languages",
     badge: "30 Questions",
     time: "~6 min",
@@ -28,7 +70,6 @@ const ASSESSMENTS = [
   },
   {
     type: "attachment",
-    icon: "🔗",
     title: "Attachment Style",
     badge: "36 Questions",
     time: "~7 min",
@@ -39,7 +80,6 @@ const ASSESSMENTS = [
   },
   {
     type: "gottman",
-    icon: "⚡",
     title: "Couple Conflict Style",
     badge: "20 Questions",
     time: "~4 min",
@@ -83,9 +123,17 @@ export default function AssessmentsPage() {
                 }}
               >
                 <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-                  <span className="text-5xl shrink-0 transition-transform duration-300 group-hover:scale-110">
-                    {assessment.icon}
-                  </span>
+                  <div
+                    className="shrink-0 flex items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
+                    style={{
+                      width: 64,
+                      height: 64,
+                      background: `${assessment.accentColor}12`,
+                      border: `1.5px solid ${assessment.accentColor}30`,
+                    }}
+                  >
+                    {(() => { const Icon = ASSESSMENT_ICONS[assessment.type]; return <Icon color={assessment.accentColor} />; })()}
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <h3 className="text-xl font-bold">{assessment.title}</h3>
@@ -118,10 +166,13 @@ export default function AssessmentsPage() {
                     </p>
                     <div className="flex items-center justify-between">
                       <span
-                        className="text-xs font-medium"
+                        className="text-xs font-medium flex items-center gap-1.5"
                         style={{ color: "var(--text-tertiary)" }}
                       >
-                        ⏱ {assessment.time}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        {assessment.time}
                       </span>
                       <div className="flex items-center gap-4">
                         <span

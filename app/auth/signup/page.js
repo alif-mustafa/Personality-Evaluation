@@ -123,7 +123,7 @@ export default function SignupPage() {
             
             <input
               type="text"
-              maxLength="8"
+              maxLength="6"
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ""))}
               placeholder="000000"

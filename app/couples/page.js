@@ -32,6 +32,7 @@ export default function CouplesPage() {
   const [inviteLink, setInviteLink] = useState("");
   const [emailSent, setEmailSent] = useState(false);
   const [inviteError, setInviteError] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const [pendingInvites, setPendingInvites] = useState([]);
   const [copied, setCopied] = useState(false);
 
@@ -66,7 +67,11 @@ export default function CouplesPage() {
     if (!partnerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(partnerEmail)) {
       return setInviteError("Please enter a valid email address.");
     }
+
+    setIsSending(true);
     const result = await sendPartnerInvite(partnerEmail.trim(), inviteAssessment);
+    setIsSending(false);
+
     if (result.success) {
       setInviteSent(true);
       setInviteLink(result.inviteLink);
@@ -225,9 +230,9 @@ export default function CouplesPage() {
                       <input type="email" value={partnerEmail} onChange={(e) => setPartnerEmail(e.target.value)} placeholder="partner@email.com"
                         className="flex-1 px-4 py-3 rounded-xl text-sm outline-none transition-all focus:ring-2 focus:ring-[var(--color-primary-500)]/30"
                         style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--foreground)" }} />
-                      <button onClick={handleSendInvite} className="px-6 py-3 rounded-xl text-sm font-semibold text-white shrink-0 transition-all hover:-translate-y-0.5"
+                      <button onClick={handleSendInvite} disabled={isSending} className={`px-6 py-3 rounded-xl text-sm font-semibold text-white shrink-0 transition-all ${isSending ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-0.5"}`}
                         style={{ background: "linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600))" }}>
-                        Send Invite
+                        {isSending ? "Sending..." : "Send Invite"}
                       </button>
                     </div>
                     {inviteError && <p className="text-xs mt-2" style={{ color: "#f43f5e" }}>{inviteError}</p>}

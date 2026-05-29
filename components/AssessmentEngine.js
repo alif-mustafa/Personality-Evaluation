@@ -65,7 +65,7 @@ export default function AssessmentEngine({ type, meta, questions, prompt, likert
 
     // Small delay for UX
     await new Promise((r) => setTimeout(r, 500));
-    saveResults(type, responses);
+    await saveResults(type, responses);
     router.push(`/results/${type}`);
   }, [answeredCount, totalQuestions, saveResults, type, responses, router]);
 

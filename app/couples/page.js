@@ -23,7 +23,7 @@ const SEVERITY_COLORS = {
 
 export default function CouplesPage() {
   const { results, couple, updateCoupleScores, updateCoupleAttachment, saveCoupleHeatmap, saveCoupleReframing, saveCoupleConflictStyle } = useApp();
-  const { user, sendPartnerInvite, checkInvites, acceptInvite } = useAuth();
+  const { user, sendPartnerInvite, checkInvites, acceptInvite, fetchPartnerStatus, fetchPartnerScores } = useAuth();
 
   const [activeTab, setActiveTab] = useState("invite");
   const [partnerEmail, setPartnerEmail] = useState("");
@@ -35,6 +35,9 @@ export default function CouplesPage() {
   const [isSending, setIsSending] = useState(false);
   const [pendingInvites, setPendingInvites] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [partnerStatus, setPartnerStatus] = useState(null);
+  const [partnerStatusLoading, setPartnerStatusLoading] = useState(false);
+  const [isGeneratingHeatmap, setIsGeneratingHeatmap] = useState(false);
 
   // Manual fallback scores
   const [partnerBScores, setPartnerBScores] = useState(couple?.partnerB || {});
@@ -45,12 +48,17 @@ export default function CouplesPage() {
   const [expandedAdvice, setExpandedAdvice] = useState(null);
   const [showManual, setShowManual] = useState(false);
 
-  // Load pending invites
+  // Load pending invites and partner status
   useEffect(() => {
     if (user) {
       checkInvites().then(setPendingInvites);
+      setPartnerStatusLoading(true);
+      fetchPartnerStatus().then((status) => {
+        setPartnerStatus(status);
+        setPartnerStatusLoading(false);
+      });
     }
-  }, [user, checkInvites]);
+  }, [user, checkInvites, fetchPartnerStatus]);
 
   // Auto-fill Partner A from own results
   const getPartnerAScores = useCallback(() => {
@@ -92,6 +100,40 @@ export default function CouplesPage() {
     navigator.clipboard.writeText(inviteLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleGenerateHeatmapFromPartner = async () => {
+    setIsGeneratingHeatmap(true);
+    const partnerBigFive = await fetchPartnerScores("bigfive");
+    setIsGeneratingHeatmap(false);
+
+    if (!partnerBigFive) {
+      alert("Could not fetch your partner's scores. Make sure they have completed the Core Personality assessment.");
+      return;
+    }
+
+    const scoresA = getPartnerAScores();
+    // Build normalized trait map from partner's bigfive result
+    const scoresB = {};
+    if (partnerBigFive.scores) {
+      Object.entries(partnerBigFive.scores).forEach(([trait, data]) => {
+        scoresB[trait] = data.normalized ?? data;
+      });
+    }
+
+    const heatmap = generateConflictHeatmap(scoresA, scoresB);
+    setHeatmapData(heatmap);
+    saveCoupleHeatmap(heatmap);
+    updateCoupleScores("A", scoresA);
+    updateCoupleScores("B", scoresB);
+    setPartnerBScores(scoresB);
+
+    if (styleA && partnerBigFive.style) {
+      const reframing = generateReframingInsights(styleA, partnerBigFive.style, scoresA, scoresB);
+      setReframingData(reframing);
+      saveCoupleReframing(reframing);
+    }
+    setActiveTab("heatmap");
   };
 
   const handleGenerateHeatmap = () => {
@@ -169,6 +211,98 @@ export default function CouplesPage() {
         {/* ===== INVITE TAB ===== */}
         {activeTab === "invite" && (
           <div className="animate-fade-up space-y-6">
+            {/* ── Partner Status Panel (shown when a couple link exists) ── */}
+            {partnerStatusLoading && (
+              <div className="rounded-2xl p-6 flex items-center gap-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
+                <div className="w-5 h-5 border-2 border-[var(--color-primary-500)]/30 border-t-[var(--color-primary-500)] rounded-full animate-spin shrink-0" />
+                <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Checking partner status…</p>
+              </div>
+            )}
+
+            {!partnerStatusLoading && partnerStatus && (
+              <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
+                {/* Header */}
+                <div className="px-6 pt-6 pb-4" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold text-white" style={{ background: "linear-gradient(135deg, var(--color-primary-500), var(--color-sage-500))" }}>
+                      {partnerStatus.displayName?.[0]?.toUpperCase() || "?"}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold truncate">{partnerStatus.displayName}</h3>
+                        <span className="text-xs px-2 py-0.5 rounded-full font-semibold shrink-0" style={{ background: "rgba(52,211,153,0.15)", color: "#059669" }}>💑 Linked</span>
+                      </div>
+                      <p className="text-xs truncate" style={{ color: "var(--text-tertiary)" }}>{partnerStatus.email}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Assessment Checklist */}
+                <div className="px-6 py-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--text-tertiary)" }}>Assessment Progress</p>
+                  <div className="space-y-2">
+                    {[
+                      { type: "bigfive", label: "Core Personality", icon: "🌊" },
+                      { type: "lovelanguages", label: "Love Languages", icon: "❤️" },
+                      { type: "attachment", label: "Attachment Style", icon: "🔗" },
+                      { type: "gottman", label: "Conflict Styles", icon: "⚡" },
+                    ].map((a) => {
+                      const done = partnerStatus.completedAssessments.includes(a.type);
+                      return (
+                        <div key={a.type} className="flex items-center justify-between py-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{a.icon}</span>
+                            <span className="text-sm" style={{ color: done ? "var(--foreground)" : "var(--text-tertiary)" }}>{a.label}</span>
+                          </div>
+                          {done ? (
+                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(52,211,153,0.12)", color: "#059669" }}>✅ Done</span>
+                          ) : (
+                            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--border-subtle)", color: "var(--text-tertiary)" }}>⏳ Pending</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Auto-generate heatmap CTA */}
+                {partnerStatus.completedAssessments.includes("bigfive") && results.bigfive && (
+                  <div className="px-6 pb-6">
+                    <button
+                      onClick={handleGenerateHeatmapFromPartner}
+                      disabled={isGeneratingHeatmap}
+                      className="w-full py-3 rounded-xl text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                      style={{ background: "linear-gradient(135deg, #f43f5e, #f59e0b)" }}
+                    >
+                      {isGeneratingHeatmap ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Loading partner scores…
+                        </span>
+                      ) : (
+                        "🔥 Generate Conflict Heatmap with Partner's Scores"
+                      )}
+                    </button>
+                    <p className="text-xs text-center mt-2" style={{ color: "var(--text-tertiary)" }}>Automatically pulls your partner's Core Personality results</p>
+                  </div>
+                )}
+
+                {partnerStatus.completedAssessments.includes("bigfive") && !results.bigfive && (
+                  <div className="px-6 pb-6">
+                    <div className="p-3 rounded-xl text-sm text-center" style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", color: "#d97706" }}>
+                      ⚠️ Your partner is ready! Complete your own <strong>Core Personality</strong> assessment to generate the heatmap.
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!partnerStatusLoading && !partnerStatus && (
+              <div className="rounded-2xl p-5" style={{ background: "rgba(59,123,252,0.04)", border: "1px dashed rgba(59,123,252,0.2)" }}>
+                <p className="text-sm text-center" style={{ color: "var(--text-tertiary)" }}>💡 Once your partner accepts the invite, their status and progress will appear here automatically.</p>
+              </div>
+            )}
+
             {/* Pending invites received */}
             {pendingInvites.length > 0 && (
               <div className="rounded-2xl p-6" style={{ background: "rgba(59,123,252,0.06)", border: "1px solid rgba(59,123,252,0.15)" }}>

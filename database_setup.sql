@@ -83,3 +83,53 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ──────────────────────────────────────────────────────────────────────
+-- 6. USER ASSESSMENTS TABLE (run this block in Supabase SQL Editor)
+-- ──────────────────────────────────────────────────────────────────────
+
+-- Add age / gender to profiles if not already present
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS age int;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS gender text;
+
+-- Stores each user's completed assessment results so partners can read them
+CREATE TABLE IF NOT EXISTS public.user_assessments (
+  id              uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id         uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  assessment_type text NOT NULL,
+  scores          jsonb NOT NULL,
+  completed_at    timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+  UNIQUE(user_id, assessment_type)
+);
+
+ALTER TABLE public.user_assessments ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies to avoid conflicts on re-run
+DROP POLICY IF EXISTS "Users can upsert own assessments" ON public.user_assessments;
+DROP POLICY IF EXISTS "Partners can read each other assessments" ON public.user_assessments;
+
+-- A user can read and write their own results
+CREATE POLICY "Users can upsert own assessments" ON public.user_assessments
+  FOR ALL USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
+-- A linked partner can READ your results (needed for heatmap / status panel)
+CREATE POLICY "Partners can read each other assessments" ON public.user_assessments
+  FOR SELECT USING (
+    auth.uid() = user_id OR
+    EXISTS (
+      SELECT 1 FROM public.couples
+      WHERE (user_1_id = auth.uid() AND user_2_id = user_assessments.user_id)
+         OR (user_2_id = auth.uid() AND user_1_id = user_assessments.user_id)
+    )
+  );
+
+-- Also allow the couple_invites table to be read by the partner_email owner
+-- (needed for checkInvites() to work for newly-signed-up partners)
+DROP POLICY IF EXISTS "Partners can view invites by email" ON public.couple_invites;
+CREATE POLICY "Partners can view invites by email" ON public.couple_invites
+  FOR SELECT USING (
+    auth.uid() = inviter_id
+    OR partner_email = (SELECT email FROM public.profiles WHERE id = auth.uid())
+  );
+

@@ -23,14 +23,11 @@ const SEVERITY_COLORS = {
 
 export default function CouplesPage() {
   const { results, couple, updateCoupleScores, updateCoupleAttachment, saveCoupleHeatmap, saveCoupleReframing, saveCoupleConflictStyle } = useApp();
-  const { user, sendPartnerInvite, checkInvites, acceptInvite, fetchPartnerStatus, fetchPartnerScores } = useAuth();
+  const { user, sendPartnerInvite, checkInvites, acceptInvite, fetchPartnerStatus, fetchPartnerScores, fetchSentInvite, updateInviteEmail, cancelInvite } = useAuth();
 
   const [activeTab, setActiveTab] = useState("invite");
   const [partnerEmail, setPartnerEmail] = useState("");
   const [inviteAssessment, setInviteAssessment] = useState("bigfive");
-  const [inviteSent, setInviteSent] = useState(false);
-  const [inviteLink, setInviteLink] = useState("");
-  const [emailSent, setEmailSent] = useState(false);
   const [inviteError, setInviteError] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [pendingInvites, setPendingInvites] = useState([]);
@@ -38,6 +35,14 @@ export default function CouplesPage() {
   const [partnerStatus, setPartnerStatus] = useState(null);
   const [partnerStatusLoading, setPartnerStatusLoading] = useState(false);
   const [isGeneratingHeatmap, setIsGeneratingHeatmap] = useState(false);
+
+  // Sent invite tracking
+  const [sentInvite, setSentInvite] = useState(null); // null = loading, false = no invite
+  const [sentInviteLoading, setSentInviteLoading] = useState(true);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [newPartnerEmail, setNewPartnerEmail] = useState("");
+  const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   // Manual fallback scores
   const [partnerBScores, setPartnerBScores] = useState(couple?.partnerB || {});
@@ -48,17 +53,37 @@ export default function CouplesPage() {
   const [expandedAdvice, setExpandedAdvice] = useState(null);
   const [showManual, setShowManual] = useState(false);
 
-  // Load pending invites and partner status
+  // Load pending invites, sent invite status, and partner status
   useEffect(() => {
     if (user) {
-      checkInvites().then(setPendingInvites);
+      checkInvites()
+        .then(setPendingInvites)
+        .catch((err) => console.error("Error checking invites:", err));
+
+      setSentInviteLoading(true);
+      fetchSentInvite()
+        .then((inv) => {
+          setSentInvite(inv || false);
+        })
+        .catch((err) => {
+          console.error("Error fetching sent invite:", err);
+          setSentInvite(false);
+        })
+        .finally(() => setSentInviteLoading(false));
+
       setPartnerStatusLoading(true);
-      fetchPartnerStatus().then((status) => {
-        setPartnerStatus(status);
-        setPartnerStatusLoading(false);
-      });
+      fetchPartnerStatus()
+        .then((status) => {
+          setPartnerStatus(status);
+        })
+        .catch((err) => {
+          console.error("Error fetching partner status:", err);
+        })
+        .finally(() => {
+          setPartnerStatusLoading(false);
+        });
     }
-  }, [user, checkInvites, fetchPartnerStatus]);
+  }, [user, checkInvites, fetchPartnerStatus, fetchSentInvite]);
 
   // Auto-fill Partner A from own results
   const getPartnerAScores = useCallback(() => {
@@ -69,6 +94,12 @@ export default function CouplesPage() {
     });
     return s;
   }, [results]);
+
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSendInvite = async () => {
     setInviteError("");
@@ -81,9 +112,10 @@ export default function CouplesPage() {
     setIsSending(false);
 
     if (result.success) {
-      setInviteSent(true);
-      setInviteLink(result.inviteLink);
-      setEmailSent(result.emailSent ?? false);
+      // Refresh sent invite status
+      const inv = await fetchSentInvite();
+      setSentInvite(inv || false);
+      setPartnerEmail("");
     } else {
       setInviteError(result.error || "Failed to send invite.");
     }
@@ -93,13 +125,38 @@ export default function CouplesPage() {
     const result = await acceptInvite(code);
     if (result.success) {
       setPendingInvites((prev) => prev.filter((i) => i.inviteCode !== code));
+      // Refresh partner status after accepting
+      const status = await fetchPartnerStatus();
+      setPartnerStatus(status);
     }
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleChangeEmail = async () => {
+    if (!newPartnerEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newPartnerEmail)) {
+      setInviteError("Please enter a valid email address.");
+      return;
+    }
+    setIsUpdatingEmail(true);
+    setInviteError("");
+    const result = await updateInviteEmail(newPartnerEmail.trim());
+    setIsUpdatingEmail(false);
+    if (result.success) {
+      const inv = await fetchSentInvite();
+      setSentInvite(inv || false);
+      setIsEditingEmail(false);
+      setNewPartnerEmail("");
+    } else {
+      setInviteError(result.error || "Failed to update email.");
+    }
+  };
+
+  const handleCancelInvite = async () => {
+    setIsCancelling(true);
+    const result = await cancelInvite();
+    setIsCancelling(false);
+    if (result.success) {
+      setSentInvite(false);
+    }
   };
 
   const handleGenerateHeatmapFromPartner = async () => {
@@ -211,14 +268,15 @@ export default function CouplesPage() {
         {/* ===== INVITE TAB ===== */}
         {activeTab === "invite" && (
           <div className="animate-fade-up space-y-6">
-            {/* ── Partner Status Panel (shown when a couple link exists) ── */}
-            {partnerStatusLoading && (
+            {/* ── Loading state ── */}
+            {(partnerStatusLoading || sentInviteLoading) && (
               <div className="rounded-2xl p-6 flex items-center gap-3" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
                 <div className="w-5 h-5 border-2 border-[var(--color-primary-500)]/30 border-t-[var(--color-primary-500)] rounded-full animate-spin shrink-0" />
                 <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Checking partner status…</p>
               </div>
             )}
 
+            {/* ── Partner Status Panel (shown when couple is formally linked) ── */}
             {!partnerStatusLoading && partnerStatus && (
               <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
                 {/* Header */}
@@ -283,7 +341,7 @@ export default function CouplesPage() {
                         "🔥 Generate Conflict Heatmap with Partner's Scores"
                       )}
                     </button>
-                    <p className="text-xs text-center mt-2" style={{ color: "var(--text-tertiary)" }}>Automatically pulls your partner's Core Personality results</p>
+                    <p className="text-xs text-center mt-2" style={{ color: "var(--text-tertiary)" }}>Automatically pulls your partner&apos;s Core Personality results</p>
                   </div>
                 )}
 
@@ -297,13 +355,119 @@ export default function CouplesPage() {
               </div>
             )}
 
-            {!partnerStatusLoading && !partnerStatus && (
-              <div className="rounded-2xl p-5" style={{ background: "rgba(59,123,252,0.04)", border: "1px dashed rgba(59,123,252,0.2)" }}>
-                <p className="text-sm text-center" style={{ color: "var(--text-tertiary)" }}>💡 Once your partner accepts the invite, their status and progress will appear here automatically.</p>
+            {/* ── Sent Invite Status Panel (shown when user has sent an invite but no couple link yet) ── */}
+            {!partnerStatusLoading && !sentInviteLoading && !partnerStatus && sentInvite && (
+              <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
+                <div className="px-6 pt-6 pb-4" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg" style={{ background: sentInvite.status === "accepted" ? "rgba(52,211,153,0.15)" : "rgba(59,123,252,0.1)" }}>
+                      {sentInvite.status === "accepted" ? "✅" : "⏳"}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-sm">Invite {sentInvite.status === "accepted" ? "Accepted!" : "Pending"}</h3>
+                        <span className="text-xs px-2 py-0.5 rounded-full font-semibold shrink-0" style={{
+                          background: sentInvite.status === "accepted" ? "rgba(52,211,153,0.15)" : "rgba(251,191,36,0.15)",
+                          color: sentInvite.status === "accepted" ? "#059669" : "#d97706"
+                        }}>
+                          {sentInvite.status === "accepted" ? "🎉 Accepted" : "⏳ Waiting"}
+                        </span>
+                      </div>
+                      <p className="text-xs truncate" style={{ color: "var(--text-tertiary)" }}>Sent to: {sentInvite.partnerEmail}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-6 py-4 space-y-4">
+                  {sentInvite.status === "accepted" && sentInvite.acceptedAt && (
+                    <div className="p-3 rounded-xl text-sm" style={{ background: "rgba(52,211,153,0.06)", border: "1px solid rgba(52,211,153,0.15)" }}>
+                      <p style={{ color: "#059669" }}>
+                        🎉 Your partner accepted the invite on <strong>{new Date(sentInvite.acceptedAt).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</strong>.
+                        Refresh the page to see their profile and assessment progress.
+                      </p>
+                    </div>
+                  )}
+
+                  {sentInvite.status === "pending" && (
+                    <>
+                      {/* Copyable invite link */}
+                      <div>
+                        <p className="text-xs font-medium mb-1.5" style={{ color: "var(--text-secondary)" }}>Share this link with your partner:</p>
+                        <div className="flex gap-2">
+                          <input type="text" readOnly value={sentInvite.inviteLink} className="flex-1 px-3 py-2.5 rounded-lg text-xs font-mono"
+                            style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--text-secondary)" }} />
+                          <button onClick={() => handleCopyLink(sentInvite.inviteLink)} className="px-4 py-2.5 rounded-lg text-xs font-semibold shrink-0 transition-all"
+                            style={{ background: copied ? "var(--color-sage-500)" : "var(--color-primary-500)", color: "white" }}>
+                            {copied ? "✓ Copied!" : "Copy Link"}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Change email inline editor */}
+                      {isEditingEmail ? (
+                        <div className="p-4 rounded-xl" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
+                          <p className="text-xs font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Change partner&apos;s email address:</p>
+                          <div className="flex gap-2">
+                            <input
+                              type="email"
+                              value={newPartnerEmail}
+                              onChange={(e) => setNewPartnerEmail(e.target.value)}
+                              placeholder="new-partner@email.com"
+                              className="flex-1 px-3 py-2.5 rounded-lg text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary-500)]/30"
+                              style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--foreground)" }}
+                            />
+                            <button
+                              onClick={handleChangeEmail}
+                              disabled={isUpdatingEmail}
+                              className="px-4 py-2.5 rounded-lg text-xs font-semibold text-white shrink-0 transition-all disabled:opacity-50"
+                              style={{ background: "var(--color-primary-500)" }}
+                            >
+                              {isUpdatingEmail ? "Updating…" : "Update"}
+                            </button>
+                            <button
+                              onClick={() => { setIsEditingEmail(false); setNewPartnerEmail(""); setInviteError(""); }}
+                              className="px-3 py-2.5 rounded-lg text-xs font-medium shrink-0"
+                              style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                          {inviteError && <p className="text-xs mt-2" style={{ color: "#f43f5e" }}>{inviteError}</p>}
+                          <p className="text-xs mt-2" style={{ color: "var(--text-tertiary)" }}>This will generate a new invite link. The old link will stop working.</p>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => { setIsEditingEmail(true); setNewPartnerEmail(sentInvite.partnerEmail); }}
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all hover:bg-[var(--border-subtle)]"
+                            style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}
+                          >
+                            ✏️ Change Email
+                          </button>
+                          <button
+                            onClick={handleCancelInvite}
+                            disabled={isCancelling}
+                            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all hover:bg-[rgba(244,63,94,0.05)] disabled:opacity-50"
+                            style={{ border: "1px solid rgba(244,63,94,0.2)", color: "#f43f5e" }}
+                          >
+                            {isCancelling ? "Cancelling…" : "✖ Cancel Invite"}
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Pending invites received */}
+            {/* Hint for when no invite exists and no partner is linked */}
+            {!partnerStatusLoading && !sentInviteLoading && !partnerStatus && !sentInvite && (
+              <div className="rounded-2xl p-5" style={{ background: "rgba(59,123,252,0.04)", border: "1px dashed rgba(59,123,252,0.2)" }}>
+                <p className="text-sm text-center" style={{ color: "var(--text-tertiary)" }}>💡 Send an invite below to link your partner. Once they accept, you&apos;ll both be able to see each other&apos;s assessment data.</p>
+              </div>
+            )}
+
+            {/* Pending invites received by the current user */}
             {pendingInvites.length > 0 && (
               <div className="rounded-2xl p-6" style={{ background: "rgba(59,123,252,0.06)", border: "1px solid rgba(59,123,252,0.15)" }}>
                 <h3 className="text-lg font-semibold mb-3">📬 You Have Pending Invites</h3>
@@ -319,17 +483,17 @@ export default function CouplesPage() {
               </div>
             )}
 
-            {/* Send invite */}
-            <div className="rounded-2xl p-8" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl">📧</span>
-                <div>
-                  <h3 className="text-xl font-bold">Invite Your Partner</h3>
-                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>An email will be sent with a direct link to the assessment you choose.</p>
+            {/* Send invite (only show when no pending invite exists) */}
+            {(!sentInvite || sentInvite.status === "accepted") && !partnerStatus && (
+              <div className="rounded-2xl p-8" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl">📧</span>
+                  <div>
+                    <h3 className="text-xl font-bold">Invite Your Partner</h3>
+                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Send an invite via email or share the link directly.</p>
+                  </div>
                 </div>
-              </div>
 
-              {!inviteSent ? (
                 <div className="space-y-4">
                   {/* Assessment selector */}
                   <div>
@@ -370,37 +534,11 @@ export default function CouplesPage() {
                       </button>
                     </div>
                     {inviteError && <p className="text-xs mt-2" style={{ color: "#f43f5e" }}>{inviteError}</p>}
-                    <p className="text-xs mt-3" style={{ color: "var(--text-tertiary)" }}>Your partner will receive an email with a link that takes them directly to their assessment and links your profiles automatically.</p>
+                    <p className="text-xs mt-3" style={{ color: "var(--text-tertiary)" }}>Your partner will receive an email with a link. You can also copy and share the link manually after sending.</p>
                   </div>
                 </div>
-              ) : (
-                <div className="animate-scale-in">
-                  {/* Email sent / link ready banner */}
-                  <div className="flex items-center gap-2 mb-4 p-3 rounded-xl" style={{ background: emailSent ? "rgba(52,211,153,0.1)" : "rgba(251,191,36,0.1)", border: emailSent ? "1px solid rgba(52,211,153,0.2)" : "1px solid rgba(251,191,36,0.2)" }}>
-                    <span>{emailSent ? "✅" : "📋"}</span>
-                    <p className="text-sm font-medium" style={{ color: emailSent ? "#059669" : "#d97706" }}>
-                      {emailSent
-                        ? <>Email sent to <strong>{partnerEmail}</strong>! They&apos;ll receive a direct link to the assessment.</>  
-                        : <>Invite created. <strong>Copy the link below</strong> and share it with <strong>{partnerEmail}</strong>.</>}
-                    </p>
-                  </div>
-
-                  {/* Always show copyable link as fallback */}
-                  <p className="text-sm mb-2" style={{ color: "var(--text-secondary)" }}>Share this link with your partner:</p>
-                  <div className="flex gap-2">
-                    <input type="text" readOnly value={inviteLink} className="flex-1 px-3 py-2.5 rounded-lg text-xs font-mono"
-                      style={{ background: "var(--background)", border: "1px solid var(--border)", color: "var(--text-secondary)" }} />
-                    <button onClick={handleCopyLink} className="px-4 py-2.5 rounded-lg text-xs font-semibold shrink-0 transition-all"
-                      style={{ background: copied ? "var(--color-sage-500)" : "var(--color-primary-500)", color: "white" }}>
-                      {copied ? "✓ Copied!" : "Copy Link"}
-                    </button>
-                  </div>
-                  <button onClick={() => { setInviteSent(false); setPartnerEmail(""); setEmailSent(false); }} className="text-xs mt-4 block" style={{ color: "var(--text-tertiary)" }}>
-                    ← Send another invite
-                  </button>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Manual entry fallback */}
             <div className="rounded-2xl p-6" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>

@@ -67,7 +67,7 @@ function CallbackContent() {
             .from("couple_invites")
             .select("inviter_id")
             .eq("invite_code", inviteCode)
-            .single();
+            .maybeSingle();
 
           if (inv?.inviter_id) {
             await supabase.from("couples").upsert(
@@ -76,7 +76,7 @@ function CallbackContent() {
             );
           }
         } catch (err) {
-          console.warn("Invite auto-accept warning:", err.message);
+          console.warn("Invite auto-accept warning:", err?.message || err);
           // Non-fatal — continue to redirect
         }
       }

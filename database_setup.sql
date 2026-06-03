@@ -133,3 +133,16 @@ CREATE POLICY "Partners can view invites by email" ON public.couple_invites
     OR partner_email = (SELECT email FROM public.profiles WHERE id = auth.uid())
   );
 
+-- ──────────────────────────────────────────────────────────────────────
+-- 7. COUPLE INVITE ENHANCEMENTS
+-- ──────────────────────────────────────────────────────────────────────
+
+-- Track when the partner accepted the invite
+ALTER TABLE public.couple_invites ADD COLUMN IF NOT EXISTS accepted_at timestamp with time zone;
+
+-- Allow the invited partner (matched by email) to update the invite to 'accepted'
+DROP POLICY IF EXISTS "Partners can accept invites by email" ON public.couple_invites;
+CREATE POLICY "Partners can accept invites by email" ON public.couple_invites
+  FOR UPDATE USING (
+    partner_email = (SELECT email FROM public.profiles WHERE id = auth.uid())
+  );

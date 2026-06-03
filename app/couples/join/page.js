@@ -45,7 +45,7 @@ function JoinContent() {
           .from("couple_invites")
           .select("inviter_id")
           .eq("invite_code", code)
-          .single();
+          .maybeSingle();
 
         if (inv?.inviter_id) {
           await supabase.from("couples").upsert(
@@ -57,7 +57,7 @@ function JoinContent() {
         // Redirect to assessment or dashboard
         router.push(assessment ? `/assessments/${assessment}` : "/assessments");
       } catch (err) {
-        console.warn("Auto-accept error:", err.message);
+        console.warn("Auto-accept error:", err?.message || err);
         router.push(assessment ? `/assessments/${assessment}` : "/assessments");
       }
     }

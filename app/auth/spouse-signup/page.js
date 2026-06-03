@@ -117,7 +117,7 @@ function SpouseSignupContent() {
               .from("couple_invites")
               .select("inviter_id")
               .eq("invite_code", inviteCode)
-              .single();
+              .maybeSingle();
 
             if (inv?.inviter_id) {
               await supabase.from("couples").upsert(

@@ -21,6 +21,70 @@ const SEVERITY_COLORS = {
   low: { bg: "rgba(52,211,153,0.12)", border: "#34d399", text: "#059669", label: "Compatible" },
 };
 
+// ── Professional SVG Icons ──────────────────────────────────────────────
+const IconPersonality = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="11" r="6" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M6 30c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M24 16l2 2 4-4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconLoveLanguages = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+    <path d="M18 30S6 22 6 14a7 7 0 0 1 12-4.9A7 7 0 0 1 30 14c0 8-12 16-12 16z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 14h12M18 8v12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+const IconAttachment = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="9" r="3" stroke={color} strokeWidth="2"/>
+    <path d="M18 12v18" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M10 16h16" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M10 16c0 6 4 10 8 14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <path d="M26 16c0 6-4 10-8 14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+const IconGottman = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
+    <rect x="4" y="6" width="18" height="13" rx="4" stroke={color} strokeWidth="2"/>
+    <path d="M7 19l-3 4 5-2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="14" y="17" width="18" height="13" rx="4" stroke={color} strokeWidth="2"/>
+    <path d="M29 30l3 4-5-2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const IconMail = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="16" x="2" y="4" rx="2"/>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  </svg>
+);
+const IconRefresh = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/>
+  </svg>
+);
+const IconCheck = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+);
+const IconClock = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+);
+const IconPen = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+);
+const IconCancel = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+);
+const IconFlame = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+);
+const IconClipboard = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+);
+const IconInbox = ({ size = 20, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+);
+
 export default function CouplesPage() {
   const { results, couple, updateCoupleScores, updateCoupleAttachment, saveCoupleHeatmap, saveCoupleReframing, saveCoupleConflictStyle } = useApp();
   const { user, sendPartnerInvite, checkInvites, acceptInvite, fetchPartnerStatus, fetchPartnerScores, fetchSentInvite, updateInviteEmail, cancelInvite } = useAuth();
@@ -227,7 +291,7 @@ export default function CouplesPage() {
     return (
       <div className="min-h-screen pt-24 pb-12 px-4">
         <div className="max-w-md mx-auto text-center pt-16">
-          <span className="text-5xl block mb-4">💑</span>
+          <span className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6" style={{ background: "rgba(244,63,94,0.1)", color: "#f43f5e" }}><IconLoveLanguages size={40} /></span>
           <h1 className="text-2xl font-bold mb-2" style={{ fontFamily: "var(--font-outfit)" }}>Sign In to Use Couples Insight</h1>
           <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>Create an account to invite your partner and compare personalities.</p>
           <div className="flex gap-3 justify-center">
@@ -251,15 +315,15 @@ export default function CouplesPage() {
         <div className="overflow-x-auto pb-1 mb-8">
         <div className="flex gap-1 p-1 rounded-xl w-fit min-w-full sm:min-w-0" style={{ background: "var(--border-subtle)" }}>
           {[
-            { id: "invite", label: "Invite Partner", icon: "📧" },
-            { id: "style", label: "Couple Style", icon: "⚡" },
-            { id: "heatmap", label: "Conflict Heatmap", icon: "🔥" },
-            { id: "reframing", label: "Reframing Tool", icon: "🔄" },
+            { id: "invite", label: "Invite Partner", icon: <IconMail size={16} /> },
+            { id: "style", label: "Couple Style", icon: <IconGottman size={16} /> },
+            { id: "heatmap", label: "Conflict Heatmap", icon: <IconFlame size={16} /> },
+            { id: "reframing", label: "Reframing Tool", icon: <IconRefresh size={16} /> },
           ].map((tab) => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeTab === tab.id ? "shadow-sm" : ""}`}
               style={{ background: activeTab === tab.id ? "var(--surface)" : "transparent", color: activeTab === tab.id ? "var(--foreground)" : "var(--text-secondary)" }}>
-              <span className="mr-1.5">{tab.icon}</span>{tab.label}
+              <span className="mr-1.5 flex items-center justify-center">{tab.icon}</span>{tab.label}
             </button>
           ))}
         </div>
@@ -300,22 +364,22 @@ export default function CouplesPage() {
                   <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: "var(--text-tertiary)" }}>Assessment Progress</p>
                   <div className="space-y-2">
                     {[
-                      { type: "bigfive", label: "Core Personality", icon: "🌊" },
-                      { type: "lovelanguages", label: "Love Languages", icon: "❤️" },
-                      { type: "attachment", label: "Attachment Style", icon: "🔗" },
-                      { type: "gottman", label: "Conflict Styles", icon: "⚡" },
+                      { type: "bigfive", label: "Core Personality", icon: <IconPersonality size={16} /> },
+                      { type: "lovelanguages", label: "Love Languages", icon: <IconLoveLanguages size={16} /> },
+                      { type: "attachment", label: "Attachment Style", icon: <IconAttachment size={16} /> },
+                      { type: "gottman", label: "Conflict Styles", icon: <IconGottman size={16} /> },
                     ].map((a) => {
                       const done = partnerStatus.completedAssessments.includes(a.type);
                       return (
                         <div key={a.type} className="flex items-center justify-between py-1.5">
                           <div className="flex items-center gap-2">
-                            <span className="text-base">{a.icon}</span>
+                            <span className="flex items-center justify-center w-6 h-6">{a.icon}</span>
                             <span className="text-sm" style={{ color: done ? "var(--foreground)" : "var(--text-tertiary)" }}>{a.label}</span>
                           </div>
                           {done ? (
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(52,211,153,0.12)", color: "#059669" }}>✅ Done</span>
+                            <span className="flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(52,211,153,0.12)", color: "#059669" }}><IconCheck size={12} /> Done</span>
                           ) : (
-                            <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--border-subtle)", color: "var(--text-tertiary)" }}>⏳ Pending</span>
+                            <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--border-subtle)", color: "var(--text-tertiary)" }}><IconClock size={12} /> Pending</span>
                           )}
                         </div>
                       );
@@ -338,7 +402,9 @@ export default function CouplesPage() {
                           Loading partner scores…
                         </span>
                       ) : (
-                        "🔥 Generate Conflict Heatmap with Partner's Scores"
+                        <span className="flex items-center justify-center gap-2">
+                          <IconFlame size={16} /> Generate Conflict Heatmap with Partner's Scores
+                        </span>
                       )}
                     </button>
                     <p className="text-xs text-center mt-2" style={{ color: "var(--text-tertiary)" }}>Automatically pulls your partner&apos;s Core Personality results</p>
@@ -347,8 +413,8 @@ export default function CouplesPage() {
 
                 {partnerStatus.completedAssessments.includes("bigfive") && !results.bigfive && (
                   <div className="px-6 pb-6">
-                    <div className="p-3 rounded-xl text-sm text-center" style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", color: "#d97706" }}>
-                      ⚠️ Your partner is ready! Complete your own <strong>Core Personality</strong> assessment to generate the heatmap.
+                    <div className="p-3 rounded-xl text-sm text-center flex items-center justify-center gap-2" style={{ background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", color: "#d97706" }}>
+                      <IconCheck size={16} /> <span>Your partner is ready! Complete your own <strong>Core Personality</strong> assessment to generate the heatmap.</span>
                     </div>
                   </div>
                 )}
@@ -360,8 +426,8 @@ export default function CouplesPage() {
               <div className="rounded-2xl overflow-hidden" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
                 <div className="px-6 pt-6 pb-4" style={{ borderBottom: "1px solid var(--border-subtle)" }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg" style={{ background: sentInvite.status === "accepted" ? "rgba(52,211,153,0.15)" : "rgba(59,123,252,0.1)" }}>
-                      {sentInvite.status === "accepted" ? "✅" : "⏳"}
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg" style={{ background: sentInvite.status === "accepted" ? "rgba(52,211,153,0.15)" : "rgba(59,123,252,0.1)", color: sentInvite.status === "accepted" ? "#059669" : "var(--color-primary-500)" }}>
+                      {sentInvite.status === "accepted" ? <IconCheck size={20} /> : <IconClock size={20} />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -370,7 +436,7 @@ export default function CouplesPage() {
                           background: sentInvite.status === "accepted" ? "rgba(52,211,153,0.15)" : "rgba(251,191,36,0.15)",
                           color: sentInvite.status === "accepted" ? "#059669" : "#d97706"
                         }}>
-                          {sentInvite.status === "accepted" ? "🎉 Accepted" : "⏳ Waiting"}
+                          {sentInvite.status === "accepted" ? <span className="flex items-center gap-1"><IconCheck size={12} /> Accepted</span> : <span className="flex items-center gap-1"><IconClock size={12} /> Waiting</span>}
                         </span>
                       </div>
                       <p className="text-xs truncate" style={{ color: "var(--text-tertiary)" }}>Sent to: {sentInvite.partnerEmail}</p>
@@ -381,8 +447,8 @@ export default function CouplesPage() {
                 <div className="px-6 py-4 space-y-4">
                   {sentInvite.status === "accepted" && sentInvite.acceptedAt && (
                     <div className="p-3 rounded-xl text-sm" style={{ background: "rgba(52,211,153,0.06)", border: "1px solid rgba(52,211,153,0.15)" }}>
-                      <p style={{ color: "#059669" }}>
-                        🎉 Your partner accepted the invite on <strong>{new Date(sentInvite.acceptedAt).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</strong>.
+                      <p style={{ color: "#059669" }} className="flex items-center gap-2">
+                        <IconCheck size={16} /> <span>Your partner accepted the invite on <strong>{new Date(sentInvite.acceptedAt).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</strong>.</span>
                         Refresh the page to see their profile and assessment progress.
                       </p>
                     </div>
@@ -442,7 +508,7 @@ export default function CouplesPage() {
                             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all hover:bg-[var(--border-subtle)]"
                             style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}
                           >
-                            ✏️ Change Email
+                            <IconPen size={14} /> Change Email
                           </button>
                           <button
                             onClick={handleCancelInvite}
@@ -450,7 +516,7 @@ export default function CouplesPage() {
                             className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-all hover:bg-[rgba(244,63,94,0.05)] disabled:opacity-50"
                             style={{ border: "1px solid rgba(244,63,94,0.2)", color: "#f43f5e" }}
                           >
-                            {isCancelling ? "Cancelling…" : "✖ Cancel Invite"}
+                            {isCancelling ? "Cancelling…" : <><IconCancel size={14} /> Cancel Invite</>}
                           </button>
                         </div>
                       )}
@@ -463,14 +529,14 @@ export default function CouplesPage() {
             {/* Hint for when no invite exists and no partner is linked */}
             {!partnerStatusLoading && !sentInviteLoading && !partnerStatus && !sentInvite && (
               <div className="rounded-2xl p-5" style={{ background: "rgba(59,123,252,0.04)", border: "1px dashed rgba(59,123,252,0.2)" }}>
-                <p className="text-sm text-center" style={{ color: "var(--text-tertiary)" }}>💡 Send an invite below to link your partner. Once they accept, you&apos;ll both be able to see each other&apos;s assessment data.</p>
+                <p className="text-sm text-center flex items-center justify-center gap-2" style={{ color: "var(--text-tertiary)" }}><IconMail size={16} /> Send an invite below to link your partner. Once they accept, you&apos;ll both be able to see each other&apos;s assessment data.</p>
               </div>
             )}
 
             {/* Pending invites received by the current user */}
             {pendingInvites.length > 0 && (
               <div className="rounded-2xl p-6" style={{ background: "rgba(59,123,252,0.06)", border: "1px solid rgba(59,123,252,0.15)" }}>
-                <h3 className="text-lg font-semibold mb-3">📬 You Have Pending Invites</h3>
+                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2"><IconInbox size={20} /> You Have Pending Invites</h3>
                 {pendingInvites.map((inv, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-xl mb-2" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
                     <div>
@@ -487,7 +553,7 @@ export default function CouplesPage() {
             {(!sentInvite || sentInvite.status === "accepted") && !partnerStatus && (
               <div className="rounded-2xl p-8" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow-lg)" }}>
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">📧</span>
+                  <span className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(59,123,252,0.1)", color: "var(--color-primary-500)" }}><IconMail size={24} /></span>
                   <div>
                     <h3 className="text-xl font-bold">Invite Your Partner</h3>
                     <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Send an invite via email or share the link directly.</p>
@@ -500,10 +566,10 @@ export default function CouplesPage() {
                     <label className="block text-sm font-medium mb-2" style={{ color: "var(--text-secondary)" }}>Direct them to this assessment first</label>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { value: "bigfive", icon: "🌊", label: "Core Personality" },
-                        { value: "lovelanguages", icon: "❤️", label: "Love Languages" },
-                        { value: "attachment", icon: "🔗", label: "Attachment" },
-                        { value: "gottman", icon: "⚡", label: "Conflict Styles" },
+                        { value: "bigfive", icon: <IconPersonality size={16} />, label: "Core Personality" },
+                        { value: "lovelanguages", icon: <IconLoveLanguages size={16} />, label: "Love Languages" },
+                        { value: "attachment", icon: <IconAttachment size={16} />, label: "Attachment" },
+                        { value: "gottman", icon: <IconGottman size={16} />, label: "Conflict Styles" },
                       ].map((a) => (
                         <button
                           key={a.value}
@@ -544,7 +610,7 @@ export default function CouplesPage() {
             <div className="rounded-2xl p-6" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
               <button onClick={() => setShowManual(!showManual)} className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-2">
-                  <span>📝</span>
+                  <span className="text-[var(--color-primary-500)] flex items-center justify-center"><IconPen size={18} /></span>
                   <span className="text-sm font-semibold">Or enter partner&apos;s scores manually</span>
                 </div>
                 <span className="text-xs" style={{ color: "var(--text-tertiary)" }}>{showManual ? "▲ Hide" : "▼ Show"}</span>
@@ -718,7 +784,7 @@ export default function CouplesPage() {
               </div>
             ) : (
               <div className="text-center py-16">
-                <span className="text-5xl block mb-4">🔄</span>
+                <span className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6" style={{ background: "rgba(59,123,252,0.1)", color: "var(--color-primary-500)" }}><IconRefresh size={40} /></span>
                 <h3 className="text-xl font-semibold mb-2">Reframing Tool</h3>
                 <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>Select attachment styles and generate a heatmap to unlock reframing insights.</p>
                 <button onClick={() => setActiveTab("invite")} className="px-6 py-2.5 rounded-lg text-sm font-semibold" style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>Go to Invite</button>
@@ -734,7 +800,7 @@ export default function CouplesPage() {
               <div className="space-y-6">
                 <div className="rounded-3xl p-6 sm:p-8" style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: "rgba(139,92,246,0.1)", color: "#8b5cf6" }}>⚡</div>
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: "rgba(139,92,246,0.1)", color: "#8b5cf6" }}><IconGottman size={20} /></div>
                     <div>
                       <h2 className="text-xl font-bold">Couple Conflict Style</h2>
                       <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Your shared interaction dynamic</p>
@@ -785,7 +851,7 @@ export default function CouplesPage() {
 
                   {couple.gottmanCoupleResult.feedback.tip && (
                     <div className="p-6 rounded-2xl" style={{ background: "var(--background)", borderLeft: "4px solid #8b5cf6" }}>
-                      <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#8b5cf6" }}>💡 Growth Tip</p>
+                      <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#8b5cf6" }}>Growth Tip</p>
                       <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                         {couple.gottmanCoupleResult.feedback.tip}
                       </p>
@@ -795,7 +861,7 @@ export default function CouplesPage() {
               </div>
             ) : (
               <div className="text-center p-12 rounded-3xl" style={{ background: "var(--surface)", border: "1px dashed var(--border)" }}>
-                <span className="text-4xl block mb-4 opacity-50">⚡</span>
+                <span className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 opacity-50" style={{ background: "rgba(139,92,246,0.1)", color: "#8b5cf6" }}><IconGottman size={32} /></span>
                 <h3 className="text-lg font-bold mb-2">Couple Style Not Generated</h3>
                 
                 {!results.gottman ? (

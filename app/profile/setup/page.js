@@ -14,6 +14,7 @@ const GENDER_OPTIONS = [
 export default function ProfileSetupPage() {
   const router = useRouter();
   const { user, saveProfile, profile } = useAuth();
+  const [name, setName] = useState(profile?.displayName || user?.displayName || "");
   const [age, setAge] = useState(profile?.age || "");
   const [gender, setGender] = useState(profile?.gender || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,6 +24,9 @@ export default function ProfileSetupPage() {
     e.preventDefault();
     setError("");
 
+    if (!name.trim()) {
+      return setError("Please enter your name.");
+    }
     const ageNum = parseInt(age);
     if (!age || isNaN(ageNum) || ageNum < 13 || ageNum > 120) {
       return setError("Please enter a valid age (13–120).");
@@ -33,7 +37,7 @@ export default function ProfileSetupPage() {
 
     setIsSubmitting(true);
     const result = await saveProfile({
-      displayName: user?.displayName || "",
+      displayName: name.trim(),
       age: ageNum,
       gender,
     });
@@ -108,6 +112,26 @@ export default function ProfileSetupPage() {
               {error}
             </div>
           )}
+
+          {/* Name */}
+          <div className="mb-6">
+            <label className="block text-sm font-semibold mb-2">
+              Your Name
+            </label>
+            <input
+              id="profile-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Alex"
+              className="w-full px-4 py-3.5 rounded-xl text-base outline-none transition-all duration-200 focus:ring-2 focus:ring-[var(--color-primary-500)]/30"
+              style={{
+                background: "var(--background)",
+                border: "1px solid var(--border)",
+                color: "var(--foreground)",
+              }}
+            />
+          </div>
 
           {/* Age */}
           <div className="mb-6">

@@ -49,13 +49,37 @@ const LOVE_LANGUAGE_NAMES = {
 };
 
 // ────────────────────────────────────────────
-// Assessment-specific hero emoji compositions
+// Assessment-specific hero illustrations
+// Maps each result key to an illustration path
 // ────────────────────────────────────────────
-const HERO_EMOJIS = {
-  bigfive: ["🌊", "🎨", "🧠", "💡", "✨"],
-  attachment: ["🔗", "💛", "🤝", "🛡️", "🌱"],
-  lovelanguages: ["❤️", "💬", "🎁", "🤲", "☕"],
-  gottman: ["⚡", "🕊️", "💪", "🧩", "🌈"],
+const HERO_ILLUSTRATIONS = {
+  bigfive: {
+    Openness: "/illustrations/bigfive_openness.png",
+    Conscientiousness: "/illustrations/bigfive_conscientiousness.png",
+    Extraversion: "/illustrations/bigfive_extraversion.png",
+    Agreeableness: "/illustrations/bigfive_agreeableness.png",
+    Neuroticism: "/illustrations/bigfive_neuroticism.png",
+  },
+  attachment: {
+    Secure: "/illustrations/attachment_secure.png",
+    Anxious: "/illustrations/attachment_anxious.png",
+    Avoidant: "/illustrations/attachment_avoidant.png",
+    "Fearful-Avoidant": "/illustrations/attachment_fearful.png",
+  },
+  lovelanguages: {
+    "Words of Affirmation": "/illustrations/love_affirmation.png",
+    "Quality Time": "/illustrations/love_qualitytime.png",
+    "Receiving Gifts": "/illustrations/love_gifts.png",
+    "Acts of Service": "/illustrations/love_service.png",
+    "Physical Touch": "/illustrations/love_touch.png",
+  },
+  gottman: {
+    Validating: "/illustrations/gottman_validating.png",
+    Volatile: "/illustrations/gottman_volatile.png",
+    "Conflict-Avoiding": "/illustrations/gottman_avoiding.png",
+    Hostile: "/illustrations/gottman_avoiding.png",
+    "Hostile-Detached": "/illustrations/gottman_avoiding.png",
+  },
 };
 
 // ────────────────────────────────────────────
@@ -66,13 +90,6 @@ const HERO_GRADIENTS = {
   attachment: "linear-gradient(135deg, #fef3c7 0%, #fce7f3 40%, #fae8ff 100%)",
   lovelanguages: "linear-gradient(135deg, #fce7f3 0%, #fff1f2 40%, #fef2f2 100%)",
   gottman: "linear-gradient(135deg, #dbeafe 0%, #e0e7ff 40%, #ede9fe 100%)",
-};
-
-const HERO_GRADIENTS_DARK = {
-  bigfive: "linear-gradient(135deg, #1e1b4b 0%, #1e3a5f 40%, #172554 100%)",
-  attachment: "linear-gradient(135deg, #451a03 0%, #4a1942 40%, #3b0764 100%)",
-  lovelanguages: "linear-gradient(135deg, #4a1942 0%, #4c0519 40%, #450a0a 100%)",
-  gottman: "linear-gradient(135deg, #172554 0%, #1e1b4b 40%, #2e1065 100%)",
 };
 
 // ────────────────────────────────────────────
@@ -396,7 +413,21 @@ export default function ResultsPage({ params }) {
   const hero = getHeroContent(type, result, firstName);
   const insights = getInsights(type, result);
   const colors = ASSESSMENT_COLORS[type] || {};
-  const emojis = HERO_EMOJIS[type] || ["✨"];
+
+  // Resolve which illustration to show based on result
+  const illustrationMap = HERO_ILLUSTRATIONS[type] || {};
+  let illustrationKey = hero.badge; // default to the badge (trait/style name)
+  if (type === "bigfive") {
+    // For Big Five, badge is the highest trait name (e.g., "Agreeableness")
+    illustrationKey = hero.badge;
+  } else if (type === "attachment") {
+    illustrationKey = result.style;
+  } else if (type === "lovelanguages") {
+    illustrationKey = result.feedback?.primary;
+  } else if (type === "gottman") {
+    illustrationKey = result.feedback?.title || result.style;
+  }
+  const heroIllustration = illustrationMap[illustrationKey] || Object.values(illustrationMap)[0];
 
   // Build score bars data
   const scoreBars = Object.entries(result.scores).map(([key, data]) => ({
@@ -499,31 +530,19 @@ export default function ResultsPage({ params }) {
           }}
         >
           <div className="flex flex-col sm:flex-row">
-            {/* Emoji Illustration Area */}
             <div
-              className="sm:w-48 shrink-0 flex items-center justify-center p-8 relative overflow-hidden"
+              className="sm:w-56 shrink-0 flex items-center justify-center p-4 relative overflow-hidden"
               style={{ background: HERO_GRADIENTS[type] || HERO_GRADIENTS.bigfive }}
             >
-              {/* Floating emojis */}
-              <div className="relative w-28 h-28 flex items-center justify-center">
-                {emojis.map((emoji, i) => (
-                  <span
-                    key={i}
-                    className="absolute"
-                    style={{
-                      fontSize: i === 0 ? "3rem" : "1.5rem",
-                      top: i === 0 ? "50%" : `${15 + (i * 20)}%`,
-                      left: i === 0 ? "50%" : `${10 + (i * 18)}%`,
-                      transform: i === 0 ? "translate(-50%, -50%)" : "none",
-                      opacity: i === 0 ? 1 : 0.7,
-                      animation: `float ${6 + i}s ease-in-out infinite`,
-                      animationDelay: `${i * 0.5}s`,
-                    }}
-                  >
-                    {emoji}
-                  </span>
-                ))}
-              </div>
+              {/* Couple Illustration */}
+              {heroIllustration && (
+                <img
+                  src={heroIllustration}
+                  alt={hero.badge || "Assessment result illustration"}
+                  className="w-full h-full object-cover rounded-xl"
+                  style={{ maxHeight: "200px", minHeight: "160px" }}
+                />
+              )}
               {/* Decorative blobs */}
               <div
                 className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-20"

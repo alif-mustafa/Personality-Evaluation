@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useApp } from "@/lib/context";
+import { ASSESSMENT_ICONS } from "@/components/icons";
 
 /**
  * AssessmentEngine — renders the quiz-taking experience.
@@ -81,7 +82,9 @@ export default function AssessmentEngine({ type, meta, questions, prompt, likert
             ← Back to Assessments
           </button>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">{meta.icon}</span>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--surface-elevated)" }}>
+              {(() => { const Icon = ASSESSMENT_ICONS[type]; return Icon ? <Icon color="var(--color-primary-500)" size={24} /> : <span className="text-2xl">{meta.icon}</span>; })()}
+            </div>
             <h1 className="text-2xl font-bold">{meta.shortTitle}</h1>
           </div>
           <p className="text-sm text-[var(--text-secondary)] mb-4">{prompt}</p>

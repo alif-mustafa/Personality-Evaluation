@@ -5,6 +5,7 @@ import { useApp } from "@/lib/context";
 import { useAuth } from "@/lib/auth-context";
 import { getAssessment } from "@/lib/assessments";
 import Link from "next/link";
+import { ASSESSMENT_ICONS } from "@/components/icons";
 
 // ────────────────────────────────────────────
 // Assessment-specific color palettes for bars
@@ -465,9 +466,17 @@ export default function ResultsPage({ params }) {
             ← Back to Assessments
           </Link>
 
-          <div className="flex items-start justify-between mt-3">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{meta.icon}</span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                style={{
+                  background: `${colors[Object.keys(colors)[0]] || "#7c6af7"}15`,
+                  color: colors[Object.keys(colors)[0]] || "#7c6af7",
+                }}
+              >
+                {(() => { const Icon = ASSESSMENT_ICONS[type]; return Icon ? <Icon color="currentColor" size={28} /> : <span className="text-2xl">{meta.icon}</span>; })()}
+              </div>
               <div>
                 <h1
                   className="text-2xl font-bold"

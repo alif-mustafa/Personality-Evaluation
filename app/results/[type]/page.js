@@ -77,8 +77,8 @@ const HERO_ILLUSTRATIONS = {
     Validating: "/illustrations/gottman_validating.png",
     Volatile: "/illustrations/gottman_volatile.png",
     "Conflict-Avoiding": "/illustrations/gottman_avoiding.png",
-    Hostile: "/illustrations/gottman_avoiding.png",
-    "Hostile-Detached": "/illustrations/gottman_avoiding.png",
+    Hostile: "/illustrations/gottman_hostile.png",
+    "Hostile-Detached": "/illustrations/gottman_hostile_detached.png",
   },
 };
 

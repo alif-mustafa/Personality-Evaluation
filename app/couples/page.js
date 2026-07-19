@@ -124,7 +124,6 @@ export default function CouplesPage() {
         .then(setPendingInvites)
         .catch((err) => console.error("Error checking invites:", err));
 
-      setSentInviteLoading(true);
       fetchSentInvite()
         .then((inv) => {
           setSentInvite(inv || false);
@@ -135,7 +134,6 @@ export default function CouplesPage() {
         })
         .finally(() => setSentInviteLoading(false));
 
-      setPartnerStatusLoading(true);
       fetchPartnerStatus()
         .then((status) => {
           setPartnerStatus(status);
@@ -403,7 +401,7 @@ export default function CouplesPage() {
                         </span>
                       ) : (
                         <span className="flex items-center justify-center gap-2">
-                          <IconFlame size={16} /> Generate Conflict Heatmap with Partner's Scores
+                          <IconFlame size={16} /> Generate Conflict Heatmap with Partner&apos;s Scores
                         </span>
                       )}
                     </button>
@@ -807,56 +805,55 @@ export default function CouplesPage() {
                     </div>
                   </div>
 
-                  <div className="text-center mb-8 p-8 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.05), transparent)", border: "1px solid var(--border)" }}>
-                    <div className="inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4" 
-                      style={{ 
-                        background: couple.conflictStyleStability === "stable" ? "var(--color-sage-500)" : "rgba(244,63,94,0.15)", 
-                        color: couple.conflictStyleStability === "stable" ? "#fff" : "#e11d48"
-                      }}>
-                      {couple.conflictStyleStability === "stable" ? "Healthy & Stable" : "Unstable Pattern"}
-                    </div>
-                    <h3 className="text-3xl sm:text-4xl font-black tracking-tight mb-4" style={{ fontFamily: "var(--font-outfit)" }}>
-                      {couple.coupleConflictStyle}
-                    </h3>
-                    <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
-                      {couple.gottmanCoupleResult.feedback.description}
-                    </p>
-                  </div>
-
-                  {couple.gottmanCoupleResult.feedback.strengths && (
-                    <div className="mb-6 p-6 rounded-2xl" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
-                      <h4 className="font-bold mb-4">What Works Well</h4>
-                      <ul className="space-y-3">
-                        {couple.gottmanCoupleResult.feedback.strengths.map((s, i) => (
-                          <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-                            <span style={{ color: "var(--color-sage-500)" }}>✓</span> {s}
-                          </li>
-                        ))}
-                      </ul>
+                  {couple.gottmanUiState === "ERROR_RETAKE_TEST" && (
+                    <div className="text-center mb-8 p-8 rounded-2xl" style={{ background: "rgba(244,63,94,0.05)", border: "1px solid rgba(244,63,94,0.2)" }}>
+                      <h3 className="text-2xl font-bold mb-4" style={{ color: "#e11d48" }}>Invalid Data Detected</h3>
+                      <p className="text-sm text-[var(--text-secondary)]">Your responses contain contradictions. Please retake the assessment.</p>
                     </div>
                   )}
 
-                  {couple.gottmanCoupleResult.feedback.patterns && (
-                    <div className="mb-6 p-6 rounded-2xl" style={{ background: "rgba(244,63,94,0.05)", border: "1px solid rgba(244,63,94,0.2)" }}>
-                      <h4 className="font-bold mb-4" style={{ color: "#e11d48" }}>Friction Patterns</h4>
-                      <ul className="space-y-3">
-                        {couple.gottmanCoupleResult.feedback.patterns.map((p, i) => (
-                          <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-                            <span style={{ color: "#e11d48" }}>⚠</span> {p}
-                          </li>
-                        ))}
-                      </ul>
+                  {couple.gottmanUiState === "CRISIS_INTERVENTION" && (
+                    <div className="text-center mb-8 p-8 rounded-2xl" style={{ background: "rgba(244,63,94,0.1)", border: "2px solid #f43f5e" }}>
+                      <div className="inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4" style={{ background: "#f43f5e", color: "white" }}>Crisis Intervention</div>
+                      <h3 className="text-3xl sm:text-4xl font-black tracking-tight mb-4" style={{ fontFamily: "var(--font-outfit)", color: "#e11d48" }}>High Risk Pattern</h3>
+                      <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto text-[var(--text-secondary)]">Urgent intervention is recommended. Highly damaging conflict patterns have been detected.</p>
                     </div>
                   )}
 
-                  {couple.gottmanCoupleResult.feedback.tip && (
-                    <div className="p-6 rounded-2xl" style={{ background: "var(--background)", borderLeft: "4px solid #8b5cf6" }}>
-                      <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#8b5cf6" }}>Growth Tip</p>
-                      <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                        {couple.gottmanCoupleResult.feedback.tip}
+                  {["MATCHED_STYLE", "COMPLEMENTARY_MISMATCH", "HIGH_FRICTION_MISMATCH"].includes(couple.gottmanUiState) && (
+                    <div className="text-center mb-8 p-8 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.05), transparent)", border: "1px solid var(--border)" }}>
+                      <div className="inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4" 
+                        style={{ background: couple.gottmanUiState === "HIGH_FRICTION_MISMATCH" ? "rgba(244,63,94,0.15)" : "var(--color-sage-500)", color: couple.gottmanUiState === "HIGH_FRICTION_MISMATCH" ? "#e11d48" : "white" }}>
+                        {couple.gottmanUiState.replace(/_/g, " ")}
+                      </div>
+                      <h3 className="text-3xl sm:text-4xl font-black tracking-tight mb-4" style={{ fontFamily: "var(--font-outfit)" }}>
+                        {couple.coupleProfile}
+                      </h3>
+                      <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto" style={{ color: "var(--text-secondary)" }}>
+                        {couple.gottmanUiState === "MATCHED_STYLE" && "You and your partner share the same healthy conflict style, making it easier to resolve disagreements."}
+                        {couple.gottmanUiState === "COMPLEMENTARY_MISMATCH" && "You have different but compatible conflict styles. Understanding these differences can strengthen your bond."}
+                        {couple.gottmanUiState === "HIGH_FRICTION_MISMATCH" && "Your styles naturally clash. You will need to put in extra effort and use the reframing tool to navigate arguments."}
                       </p>
                     </div>
                   )}
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    {['A', 'B'].map((p) => {
+                      const summary = p === 'A' ? couple.partnerASummary : couple.partnerBSummary;
+                      if (!summary) return null;
+                      return (
+                        <div key={p} className="p-6 rounded-2xl" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
+                          <h4 className="font-bold mb-4">{p === 'A' ? "Your Profile" : "Partner's Profile"}</h4>
+                          <p className="text-sm mb-2"><span style={{ color: "var(--text-secondary)" }}>Dominant Style:</span> <strong style={{ color: "var(--color-primary-500)" }}>{summary.dominant_style}</strong></p>
+                          <div className="space-y-2 mt-4">
+                            {summary.urgent_flags_present && <div className="text-xs p-2 rounded font-semibold flex items-center gap-2" style={{ background: "rgba(244,63,94,0.1)", color: "#e11d48" }}>⚠ Urgent Risk Detected</div>}
+                            {summary.soft_flags_present && <div className="text-xs p-2 rounded font-semibold flex items-center gap-2" style={{ background: "rgba(245,158,11,0.1)", color: "#d97706" }}>⚠ Soft Risk Detected</div>}
+                            {!summary.urgent_flags_present && !summary.soft_flags_present && <div className="text-xs p-2 rounded font-semibold flex items-center gap-2" style={{ background: "rgba(52,211,153,0.1)", color: "#059669" }}>✓ No Red Flags</div>}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
             ) : (

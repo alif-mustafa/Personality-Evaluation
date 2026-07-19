@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
@@ -8,6 +8,11 @@ import { useAuth } from "@/lib/auth-context";
 export default function SignupPage() {
   const router = useRouter();
   const { signUp, signInWithGoogle, verifyOtp, loading, error, clearError, isDemo } = useAuth();
+  
+  // Clear any existing auth errors when navigating here (e.g. from failed login)
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
   const [form, setForm] = useState({
     displayName: "",
     email: "",
